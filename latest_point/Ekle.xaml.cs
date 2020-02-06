@@ -20,12 +20,12 @@ namespace latest_point
     /// </summary>
     public partial class Ekle : UserControl
     {
-        int eklePadeID;
+        int addingPadeID;
         public Ekle()
         {
             InitializeComponent();
             
-            eklePadeID = 0;
+            addingPadeID = 0;
             if (currentPage.id == 1)
             {
                 checkKitap.IsChecked = true ;
@@ -39,31 +39,25 @@ namespace latest_point
             currentPage.id = -1;
         }
 
-        /*
-        private void SecEkle_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-        */
-
         private void CheckKitap_Checked(object sender, RoutedEventArgs e)
         {
-            if (eklePadeID == 1) { return; }
+            if (addingPadeID == 1) { return; }
             yeniEkle.Content = new kitapEkle();
-            eklePadeID = 1;
+            addingPadeID = 1;
         }
 
         private void CheckVideo_Checked(object sender, RoutedEventArgs e)
         {
-            if (eklePadeID == 2) { return; }
+            if (addingPadeID == 2) { return; }
             yeniEkle.Content = new videoEkle();
-            eklePadeID = 2;
+            addingPadeID = 2;
         }
 
         private void CheckBasvuru_Checked(object sender, RoutedEventArgs e)
         {
-            if (eklePadeID == 3) { return; }
+            if (addingPadeID == 3) { return; }
             yeniEkle.Content = new basvuruEkle();
-            eklePadeID = 3;
+            addingPadeID = 3;
         }
     }
 }
