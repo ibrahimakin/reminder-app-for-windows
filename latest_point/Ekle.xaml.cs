@@ -20,10 +20,12 @@ namespace latest_point
     /// </summary>
     public partial class Ekle : UserControl
     {
+        int eklePadeID;
         public Ekle()
         {
             InitializeComponent();
-            //yeniEkle.Content = new videoEkle();
+            
+            eklePadeID = 0;
             if (currentPage.id == 1)
             {
                 checkKitap.IsChecked = true ;
@@ -45,17 +47,23 @@ namespace latest_point
 
         private void CheckKitap_Checked(object sender, RoutedEventArgs e)
         {
+            if (eklePadeID == 1) { return; }
             yeniEkle.Content = new kitapEkle();
+            eklePadeID = 1;
         }
 
         private void CheckVideo_Checked(object sender, RoutedEventArgs e)
         {
+            if (eklePadeID == 2) { return; }
             yeniEkle.Content = new videoEkle();
+            eklePadeID = 2;
         }
 
         private void CheckBasvuru_Checked(object sender, RoutedEventArgs e)
         {
+            if (eklePadeID == 3) { return; }
             yeniEkle.Content = new basvuruEkle();
+            eklePadeID = 3;
         }
     }
 }
