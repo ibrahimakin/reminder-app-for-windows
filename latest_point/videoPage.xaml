@@ -1,0 +1,93 @@
+﻿<Page x:Class="latest_point.videoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:latest_point"
+      mc:Ignorable="d" 
+      d:DesignHeight="500" d:DesignWidth="800"
+      Title="Video Page" Loaded="VideoPage_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,0,0,0" FontSize="16" FontFamily="Arial" Text="Video"/>
+        <StackPanel Grid.Row="1" x:Name="butonlar"/>
+
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="İsim" x:Name="isimText"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="isim"/>
+                <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="isimEdit_Click" x:Name="isimEdit"/>
+                <TextBox   HorizontalAlignment="Left" Visibility="Hidden" Height="25" Width="120" PreviewKeyDown="IsimPreviewKeyDown" x:Name="isimEditText"/>
+                <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Content=" ✓ " Click="isimKaydet_Click" x:Name="isimKaydet"/>
+            </StackPanel>
+
+            <TextBlock  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Kaçıncı" x:Name="kacinciText"/>
+            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="kacinci"/>
+                <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="KacinciEdit_Click" x:Name="kacinciEdit"/>
+                <TextBox   HorizontalAlignment="Left" Visibility="Hidden" Height="25" Width="120" PreviewKeyDown="EditPreviewKeyDown" PreviewTextInput="EditPreviewTextInput" x:Name="kacinciEditText"/>
+                <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Content=" ✓ " Click="KacinciKaydet_Click" x:Name="kacinciKaydet"/>
+            </StackPanel>
+
+            <TextBlock  Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Dakika" x:Name="dakikaText"/>
+            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="dakika"/>
+                <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="DakikaEdit_Click" x:Name="dakikaEdit"/>
+                <TextBox   HorizontalAlignment="Left" Visibility="Hidden" Height="25" Width="120" PreviewKeyDown="EditPreviewKeyDown" PreviewTextInput="EditPreviewTextInput" x:Name="dakikaEditText"/>
+                <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Content=" ✓ " Click="DakikaKaydet_Click" x:Name="dakikaKaydet"/>
+            </StackPanel>
+
+            <TextBlock  Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Link" x:Name="linkText"/>
+            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Hyperlink x:Name="linkHyper" NavigateUri="http://www.google.com" RequestNavigate="linkHyper_RequestNavigate"><TextBlock x:Name="link"/></Hyperlink>
+                </TextBlock>
+                <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="linkEdit_Click" x:Name="linkEdit"/>
+                <TextBox   HorizontalAlignment="Left" Visibility="Hidden" Height="25" Width="120" PreviewKeyDown="LinkPreviewKeyDown" x:Name="linkEditText"/>
+                <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Content=" ✓ " Click="linkKaydet_Click" x:Name="linkKaydet"/>
+            </StackPanel>
+
+            <TextBlock  Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Başlangıç" x:Name="baslangicText"/>
+            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="baslangic"/>
+            </StackPanel>
+
+            <TextBlock  Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Değişim" x:Name="degisimText"/>
+            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="degisim"/>
+            </StackPanel>
+
+            <Grid Grid.Row="7" Grid.ColumnSpan="2" Margin="100,0,0,0">
+                <Button    HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Width="75" Content="Sil" Click="VideoSilBtn_Click" x:Name="videoSilBtn"/>
+                <Button    HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Width="37" Content="✓"  Click="Onay_Click"  x:Name="onay"/>
+                <Button    HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Width="37" Content="X"   Click="Iptal_Click" x:Name="iptal" Margin="38,0,0,0"/>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0"  Text="" x:Name="silDurum"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
