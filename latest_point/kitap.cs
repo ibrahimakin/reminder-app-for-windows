@@ -12,15 +12,17 @@ namespace latest_point
         string isim;
         int sayfa;
         string link;
+        int bitti;
         string baslangic;
         string degisim;
 
-        public kitap(int id, string isim, int sayfa, string link, string baslangic, string degisim)
+        public kitap(int id, string isim, int sayfa, string link, int bitti, string baslangic, string degisim)
         {
             this.id = id;
             this.isim = isim;
             this.sayfa = sayfa;
             this.link = link;
+            this.bitti = bitti;
             this.baslangic = baslangic;
             this.degisim = degisim;
         }
@@ -29,7 +31,14 @@ namespace latest_point
         public string Isim { get => isim; set => isim = value; }
         public int Sayfa { get => sayfa; set => sayfa = value; }
         public string Link { get => link; set => link = value; }
+        public int Bitti { get => bitti; set => bitti = value; }
         public string Baslangic { get => baslangic; set => baslangic = value; }
         public string Degisim { get => degisim; set => degisim = value; }
+
+        public string bittiToString()
+        {
+            if (bitti == 1) { return "✓"; }
+            return "X";
+        }
     }
 }

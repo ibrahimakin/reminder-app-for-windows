@@ -34,15 +34,23 @@ namespace latest_point
                 SQLiteDataReader rdr = command.ExecuteReader();
                 int i = 0;
                 int id = 0;
+                string isim = " ";
+                int bitti = 0;
                 while (rdr.Read())
                 {
                     id = Convert.ToInt32(rdr["id"]);
-                    kitap item = new kitap(id, rdr["isim"].ToString(), Convert.ToInt16(rdr["sayfa"]), rdr["link"].ToString(), rdr["baslangic"].ToString(), rdr["degisim"].ToString());
+                    isim = rdr["isim"].ToString();
+                    try
+                    {
+                        bitti = Convert.ToInt32(rdr["bitti"]);
+                    }
+                    catch (Exception) { }
+
+                    kitap item = new kitap(id, isim, Convert.ToInt16(rdr["sayfa"]), rdr["link"].ToString(), bitti, rdr["baslangic"].ToString(), rdr["degisim"].ToString());
                     kitaps.Add(item);
 
-                    Button YeniButon = new Button();
-                    YeniButon.Content = item.Isim;
-                    YeniButon.Margin = new Thickness(0, 5, 0, 0);
+                    Button YeniButon = GenerateButton(isim, bitti);
+                    
                     YeniButon.Tag = i.ToString();
                     YeniButon.Click += new RoutedEventHandler(YeniButon_Click);
                     kitaplar.Children.Add(YeniButon);
@@ -63,8 +71,11 @@ namespace latest_point
 
         private void YeniButon_Click(object sender, RoutedEventArgs e)
         {
+            if (sender == tiklanan) { return; }
             isimText.Visibility = Visibility.Visible;
             isimEdit.Visibility = Visibility.Visible;
+
+            bittiEdit.Visibility = Visibility.Visible;
 
             sayfaText.Visibility = Visibility.Visible;
             sayfaEdit.Visibility = Visibility.Visible;
@@ -81,6 +92,7 @@ namespace latest_point
             int i = Convert.ToInt16(tiklanan.Tag);
 
             isim.Text = kitaps[i].Isim;
+            bitti.Text = kitaps[i].bittiToString();
             sayfa.Text = kitaps[i].Sayfa.ToString();
             link.Text = kitaps[i].Link;
             baslangic.Text = kitaps[i].Baslangic;
@@ -255,12 +267,14 @@ namespace latest_point
             {
                 isimEdit.Content = " < ";
                 isimEditText.Visibility = Visibility.Visible;
+                isimEditText.Width = 120;
                 isimKaydet.Visibility = Visibility.Visible;
             }
             else
             {
                 isimEdit.Content = " > ";
                 isimEditText.Visibility = Visibility.Hidden;
+                isimEditText.Width = 0;
                 isimKaydet.Visibility = Visibility.Hidden;
             }
         }
@@ -316,6 +330,58 @@ namespace latest_point
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
+        }
+
+        private Button GenerateButton(string isim, int done)
+        {
+            Button yeniButon = new Button();
+            Grid yeniGrid = new Grid();
+            ColumnDefinition column0 = new ColumnDefinition();
+            ColumnDefinition column1 = new ColumnDefinition();
+            column0.Width = new GridLength(btnsWidth.Width.Value - 15);
+
+            yeniGrid.ColumnDefinitions.Add(column0);
+            yeniGrid.ColumnDefinitions.Add(column1);
+
+            TextBlock butonIsim = new TextBlock();
+            butonIsim.Text = isim;
+
+            TextBlock bitti = new TextBlock();
+            if (done == 1) { bitti.Text = "✓"; }
+
+            butonIsim.HorizontalAlignment = HorizontalAlignment.Center;
+            bitti.HorizontalAlignment = HorizontalAlignment.Right;
+
+            Grid.SetColumn(bitti, 1);
+
+            yeniGrid.Children.Add(butonIsim);
+            yeniGrid.Children.Add(bitti);
+
+            yeniButon.Content = yeniGrid;
+            yeniButon.Margin = new Thickness(0, 5, 0, 0);
+
+            return yeniButon;
+        }
+
+        private void bittiEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (bittiEdit.Content.ToString() == " > ")
+            {
+                bittiEdit.Content = " < ";
+                bittiEditCB.Visibility = Visibility.Visible;
+                bittiKaydet.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                bittiEdit.Content = " > ";
+                bittiEditCB.Visibility = Visibility.Hidden;
+                bittiKaydet.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void bittiKaydet_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

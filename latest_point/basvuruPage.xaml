@@ -14,7 +14,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200" x:Name="btnsWidth"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -40,10 +40,14 @@
 
             <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="İsim" x:Name="isimText"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="isim"/>
+                <TextBlock VerticalAlignment="Center" x:Name="isim"/>
                 <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="isimEdit_Click" x:Name="isimEdit"/>
-                <TextBox   HorizontalAlignment="Left" Visibility="Hidden" Height="25" Width="120" PreviewKeyDown="IsimPreviewKeyDown" x:Name="isimEditText"/>
+                <TextBox   HorizontalAlignment="Left" Visibility="Hidden" Height="25" Width="0" PreviewKeyDown="IsimPreviewKeyDown" x:Name="isimEditText"/>
                 <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Content=" ✓ " Click="isimKaydet_Click" x:Name="isimKaydet"/>
+                <TextBlock VerticalAlignment="Center" x:Name="bitti" FontSize="30"/>
+                <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Margin="10,0,0,0" Content=" > " Click="bittiEdit_Click" x:Name="bittiEdit"/>
+                <CheckBox  VerticalAlignment="Center" Visibility="Hidden" Margin="5,0,5,0" x:Name="bittiEditCB"/>
+                <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Content=" ✓ " Click="bittiKaydet_Click" x:Name="bittiKaydet"/>
             </StackPanel>
 
             <TextBlock  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Başvuru" x:Name="kayitText"/>
