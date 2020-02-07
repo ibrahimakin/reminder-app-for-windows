@@ -6,9 +6,8 @@
         xmlns:local="clr-namespace:latest_point"
         mc:Ignorable="d"
         Title="MainWindow" Height="475" Width="800"
-        MinHeight="466" MinWidth="700">
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-        <Grid>
+        MinHeight="450" MinWidth="700">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition/>
@@ -24,5 +23,4 @@
         </Grid>
         <Frame x:Name="eklePage" Grid.Column="1" NavigationUIVisibility="Hidden"/>
     </Grid>
-    </ScrollViewer>
 </Window>
