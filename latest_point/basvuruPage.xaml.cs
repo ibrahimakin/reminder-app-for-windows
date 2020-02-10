@@ -155,33 +155,47 @@ namespace latest_point
 
         private void KayitKaydet_Click(object sender, RoutedEventArgs e)
         {
+            string yeni = kayitEditText.Text;
             int index = Convert.ToInt16(tiklanan.Tag);
+            if (yeni == basvurus[index].Isim)
+            {
+                changeTextAsync("Başvuru aynı.");
+                return;
+            }
             string id = basvurus[index].Id.ToString();
 
             SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
             conn.Open();
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set kayit = '" + kayitEditText.Text + "' where id = '" + id + "' ", conn);
+            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set kayit = '" + yeni + "' where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
-            basvurus[index].Kayit = kayitEditText.Text;
+            basvurus[index].Kayit = yeni;
 
-            kayit.Text = kayitEditText.Text;
+            kayit.Text = yeni;
             conn.Dispose();
             degisimGuncelle(index);
+            changeTextAsync("Değiştirildi.");
         }
 
         private void SonKaydet_Click(object sender, RoutedEventArgs e)
         {
+            string yeni = sonEditText.Text;
             int index = Convert.ToInt16(tiklanan.Tag);
+            if (yeni == basvurus[index].Son)
+            {
+                changeTextAsync("Son başvuru aynı.");
+                return;
+            }
             string id = basvurus[index].Id.ToString();
             SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
             conn.Open();
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set son = '" + sonEditText.Text + "' where id = '" + id + "' ", conn);
+            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set son = '" + yeni + "' where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
-            basvurus[index].Son = sonEditText.Text;
+            basvurus[index].Son = yeni;
 
-            son.Text = sonEditText.Text;
+            son.Text = yeni;
             conn.Dispose();
             degisimGuncelle(index);
+            changeTextAsync("Değiştirildi.");
         }
 
         void degisimGuncelle(int index)
@@ -200,14 +214,7 @@ namespace latest_point
         private void EditPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
 
-            var textBox = sender as TextBox;
-            if (textBox.GetLineLength(0) < 1 || textBox.Text.Contains(','))
-            {
-                e.Handled = Regex.IsMatch(e.Text, "[^0-9]");
-                return;
-            }
-            e.Handled = Regex.IsMatch(e.Text, "[^0-9,0-9]");
-
+            //e.Handled = Regex.IsMatch(e.Text, "^(0[1 - 9] |[12][0 - 9] | 3[01])[- /.](0[1 - 9] | 1[012])[- /.](19 | 20)");
         }
 
         private void EditPreviewKeyDown(object sender, KeyEventArgs e)
@@ -236,7 +243,7 @@ namespace latest_point
             conn.Dispose();
             basvurus.RemoveAt(index);
 
-            changeTextAsync();
+            changeTextAsync("Silindi.");
 
             butonlar.Children.Clear();
             bilgiTemizle();
@@ -300,9 +307,9 @@ namespace latest_point
             videoSilBtn.Visibility = Visibility.Hidden;
         }
 
-        private async Task changeTextAsync()
+        private async Task changeTextAsync(string durum)
         {
-            silDurum.Text = "Silindi.";
+            silDurum.Text = durum;
             await Task.Delay(2000);
             silDurum.Text = "";
         }
@@ -325,34 +332,49 @@ namespace latest_point
 
         private void linkKaydet_Click(object sender, RoutedEventArgs e)
         {
+            string yeni = linkEditText.Text;
             int index = Convert.ToInt16(tiklanan.Tag);
+            if (yeni == basvurus[index].Link)
+            {
+                changeTextAsync("Link aynı.");
+                return;
+            }
             string id = basvurus[index].Id.ToString();
 
             SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
             conn.Open();
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set link = '" + linkEditText.Text + "' where id = '" + id + "' ", conn);
+            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set link = '" + yeni + "' where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
-            basvurus[index].Link = linkEditText.Text;
+            basvurus[index].Link = yeni;
 
-            link.Text = linkEditText.Text;
+            link.Text = yeni;
             conn.Dispose();
             degisimGuncelle(index);
+            changeTextAsync("Değiştirildi.");
         }
 
         private void sonucKaydet_Click(object sender, RoutedEventArgs e)
         {
+            string yeni = sonucEditText.Text;
             int index = Convert.ToInt16(tiklanan.Tag);
-            string id = basvurus[index].Id.ToString();
+            if (yeni == basvurus[index].Sonuc)
+            {
+                changeTextAsync("Sonuc aynı.");
+                return;
+            }
 
+            string id = basvurus[index].Id.ToString();
+            
             SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
             conn.Open();
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set sonuc = '" + sonucEditText.Text + "' where id = '" + id + "' ", conn);
+            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set sonuc = '" + yeni + "' where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
-            basvurus[index].Sonuc = sonucEditText.Text;
+            basvurus[index].Sonuc = yeni;
 
-            sonuc.Text = sonucEditText.Text;
+            sonuc.Text = yeni;
             conn.Dispose();
             degisimGuncelle(index);
+            changeTextAsync("Değiştirildi.");
         }
 
         private void sonucEdit_Click(object sender, RoutedEventArgs e)
@@ -379,13 +401,25 @@ namespace latest_point
 
         private void isimKaydet_Click(object sender, RoutedEventArgs e)
         {
+            string yeni = isimEditText.Text;
+
+            if (yeni == "")
+            {
+                changeTextAsync("İsim boş olamaz.");
+                return;
+            }
             int index = Convert.ToInt16(tiklanan.Tag);
+            if (yeni == basvurus[index].Isim)
+            {
+                changeTextAsync("İsim aynı.");
+                return;
+            }
             string id = basvurus[index].Id.ToString();            
 
             SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
             conn.Open();
             
-            string yeni = isimEditText.Text;
+            
             
             SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set isim = '" + yeni + "' where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
@@ -396,6 +430,8 @@ namespace latest_point
 
             conn.Dispose();
             degisimGuncelle(index);
+
+            changeTextAsync("Değiştirildi.");
         }
 
         private void isimEdit_Click(object sender, RoutedEventArgs e)
@@ -477,7 +513,15 @@ namespace latest_point
 
         private void bittiKaydet_Click(object sender, RoutedEventArgs e)
         {
-
+            int yeni;
+            if (bittiEditCB.IsChecked == true) { yeni = 1; }
+            else { yeni = 0; }
+            int index = Convert.ToInt16(tiklanan.Tag);
+            if (yeni == basvurus[index].Bitti)
+            {
+                return;
+            }
+            changeTextAsync("Değiştirildi.");
         }
     }
 }
