@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Data.SQLite;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -86,14 +84,25 @@ namespace latest_point
             baslangicText.Visibility = Visibility.Visible;
             degisimText.Visibility = Visibility.Visible;     
             videoSilBtn.Visibility = Visibility.Visible;
+
             tiklanan = (Button)sender;
             int i = Convert.ToInt16(tiklanan.Tag);
+
             isim.Text = basvurus[i].Isim;
             bitti.Text = basvurus[i].bittiToString();
             kayit.Text = basvurus[i].Kayit;
             son.Text = basvurus[i].Son;
             string adres = basvurus[i].Link;
             link.Text = adres;
+            sonuc.Text = basvurus[i].Sonuc;
+            baslangic.Text = basvurus[i].Baslangic;
+            degisim.Text = basvurus[i].Degisim;
+
+            if (basvurus[i].Bitti == 1)
+            {
+                bittiEditCB.IsChecked = true;
+            }
+
             try
             {
                 linkHyper.NavigateUri = new Uri(adres);
@@ -110,9 +119,7 @@ namespace latest_point
                     linkHyper.IsEnabled = false;
                 }
             }            
-            sonuc.Text = basvurus[i].Sonuc;
-            baslangic.Text = basvurus[i].Baslangic;
-            degisim.Text = basvurus[i].Degisim;
+            
             Iptal_Click(sender, e);
         }
 
@@ -244,10 +251,11 @@ namespace latest_point
             basvurus.RemoveAt(index);
 
             changeTextAsync("Silindi.");
-
-            butonlar.Children.Clear();
+            
+            butonlar.Children.Remove(tiklanan);
+            //butonlar.Children.Clear();
             bilgiTemizle();
-            Listele();
+            //Listele();
         }
 
         private void Iptal_Click(object sender, RoutedEventArgs e)
@@ -286,17 +294,24 @@ namespace latest_point
             sonEditText.Visibility = Visibility.Hidden;
             sonKaydet.Visibility = Visibility.Hidden;
 
+            sonuc.Text = "";
+            sonucEdit.Content = " > ";
+            sonucEdit.Visibility = Visibility.Hidden;
+            sonucEditText.Visibility = Visibility.Hidden;
+            sonucKaydet.Visibility = Visibility.Hidden;
+
             link.Text = "";
             linkEdit.Content = " > ";
             linkEdit.Visibility = Visibility.Hidden;
             linkEditText.Visibility = Visibility.Hidden;
             linkKaydet.Visibility = Visibility.Hidden;
 
-            sonuc.Text = "";
-            sonucEdit.Content = " > ";
-            sonucEdit.Visibility = Visibility.Hidden;
-            sonucEditText.Visibility = Visibility.Hidden;
-            sonucKaydet.Visibility = Visibility.Hidden;
+            bitti.Text = "";
+            bittiEdit.Content = " > ";
+            bittiEdit.Visibility = Visibility.Hidden;
+            bittiEditCB.IsChecked = false;
+            bittiEditCB.Visibility = Visibility.Hidden;
+            bittiKaydet.Visibility = Visibility.Hidden;
 
             baslangic.Text = "";
             degisim.Text = "";
@@ -521,6 +536,20 @@ namespace latest_point
             {
                 return;
             }
+            string id = basvurus[index].Id.ToString();
+
+            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
+            conn.Open();
+
+            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set bitti = '" + yeni + "' where id = '" + id + "' ", conn);
+            command.ExecuteNonQuery();
+
+            basvurus[index].Bitti = yeni;
+            bitti.Text = basvurus[index].bittiToString();
+
+            conn.Dispose();
+            degisimGuncelle(index);
+
             changeTextAsync("Değiştirildi.");
         }
     }
