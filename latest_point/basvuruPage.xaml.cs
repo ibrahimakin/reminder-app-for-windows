@@ -42,7 +42,7 @@ namespace latest_point
                     {
                         bitti = Convert.ToInt32(rdr["bitti"]);
                     }
-                    catch (Exception) { }
+                    catch (Exception) { bitti = 0; }
 
                     basvuru item = new basvuru(id, isim, rdr["kayit"].ToString(), rdr["son"].ToString(), rdr["sonuc"].ToString(), rdr["link"].ToString(), bitti, rdr["baslangic"].ToString(), rdr["degisim"].ToString());
                     basvurus.Add(item);
@@ -102,6 +102,7 @@ namespace latest_point
             {
                 bittiEditCB.IsChecked = true;
             }
+            else { bittiEditCB.IsChecked = false; }
 
             try
             {
@@ -252,10 +253,10 @@ namespace latest_point
 
             changeTextAsync("Silindi.");
             
-            butonlar.Children.Remove(tiklanan);
-            //butonlar.Children.Clear();
+            //butonlar.Children.Remove(tiklanan);  //index=tag bozulur.
+            butonlar.Children.Clear();
             bilgiTemizle();
-            //Listele();
+            Listele();
         }
 
         private void Iptal_Click(object sender, RoutedEventArgs e)
