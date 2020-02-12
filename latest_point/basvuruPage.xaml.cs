@@ -21,6 +21,12 @@ namespace latest_point
         {
             InitializeComponent();
         }
+
+        private void BasvuruPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            Listele();
+        }
+
         public void Listele()
         {
             SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
@@ -124,10 +130,96 @@ namespace latest_point
             Iptal_Click(sender, e);
         }
 
-        private void BasvuruPage_Loaded(object sender, RoutedEventArgs e)
+        
+        private Button GenerateButton(string isim, int done)
         {
-            Listele();
+            Button yeniButon = new Button();
+            ChangeButton(yeniButon, isim, done);
+            return yeniButon;
         }
+
+        private void ChangeButton(Button buton, string isim, int done)
+        {
+            Grid yeniGrid = new Grid();
+            ColumnDefinition column0 = new ColumnDefinition();
+            ColumnDefinition column1 = new ColumnDefinition();
+            column0.Width = new GridLength(btnsWidth.Width.Value - 15);
+
+            yeniGrid.ColumnDefinitions.Add(column0);
+            yeniGrid.ColumnDefinitions.Add(column1);
+
+            TextBlock butonIsim = new TextBlock();
+            butonIsim.Text = isim;
+
+            TextBlock bitti = new TextBlock();
+            if (done == 1) { bitti.Text = "✓"; }
+
+            butonIsim.HorizontalAlignment = HorizontalAlignment.Center;
+            bitti.HorizontalAlignment = HorizontalAlignment.Right;
+
+            Grid.SetColumn(bitti, 1);
+
+            yeniGrid.Children.Add(butonIsim);
+            yeniGrid.Children.Add(bitti);
+
+            buton.Content = yeniGrid;
+            buton.Margin = new Thickness(0, 5, 0, 0);
+        }
+
+        private void isimEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (isimEdit.Content.ToString() == " > ")
+            {
+                isimEdit.Content = " < ";
+                isimEditText.Visibility = Visibility.Visible;
+                isimEditText.Width = 120;
+                isimKaydet.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                isimEdit.Content = " > ";
+                isimEditText.Visibility = Visibility.Hidden;
+                isimEditText.Width = 0;
+                isimKaydet.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void isimKaydet_Click(object sender, RoutedEventArgs e)
+        {
+            string yeni = isimEditText.Text;
+
+            if (yeni == "")
+            {
+                changeTextAsync("İsim boş olamaz.");
+                return;
+            }
+            int index = Convert.ToInt16(tiklanan.Tag);
+            if (yeni == basvurus[index].Isim)
+            {
+                changeTextAsync("İsim aynı.");
+                return;
+            }
+            string id = basvurus[index].Id.ToString();
+
+            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
+            conn.Open();
+
+
+
+            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set isim = '" + yeni + "' where id = '" + id + "' ", conn);
+            command.ExecuteNonQuery();
+
+            basvurus[index].Isim = yeni;
+            isim.Text = yeni;
+            tiklanan.Content = yeni;
+
+            conn.Dispose();
+            degisimGuncelle(index);
+
+            changeTextAsync("Değiştirildi.");
+        }
+
+        
 
         private void KayitEdit_Click(object sender, RoutedEventArgs e)
         {
@@ -145,27 +237,11 @@ namespace latest_point
             }
         }
 
-        private void SonEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (sonEdit.Content.ToString() == " > ")
-            {
-                sonEdit.Content = " < ";
-                sonEditText.Visibility = Visibility.Visible;
-                sonKaydet.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                sonEdit.Content = " > ";
-                sonEditText.Visibility = Visibility.Hidden;
-                sonKaydet.Visibility = Visibility.Hidden;
-            }
-        }
-
         private void KayitKaydet_Click(object sender, RoutedEventArgs e)
         {
             string yeni = kayitEditText.Text;
             int index = Convert.ToInt16(tiklanan.Tag);
-            if (yeni == basvurus[index].Isim)
+            if (yeni == basvurus[index].Kayit)
             {
                 changeTextAsync("Başvuru aynı.");
                 return;
@@ -182,6 +258,22 @@ namespace latest_point
             conn.Dispose();
             degisimGuncelle(index);
             changeTextAsync("Değiştirildi.");
+        }
+
+        private void SonEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (sonEdit.Content.ToString() == " > ")
+            {
+                sonEdit.Content = " < ";
+                sonEditText.Visibility = Visibility.Visible;
+                sonKaydet.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                sonEdit.Content = " > ";
+                sonEditText.Visibility = Visibility.Hidden;
+                sonKaydet.Visibility = Visibility.Hidden;
+            }
         }
 
         private void SonKaydet_Click(object sender, RoutedEventArgs e)
@@ -203,6 +295,130 @@ namespace latest_point
             son.Text = yeni;
             conn.Dispose();
             degisimGuncelle(index);
+            changeTextAsync("Değiştirildi.");
+        }
+
+        private void sonucEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (sonucEdit.Content.ToString() == " > ")
+            {
+                sonucEdit.Content = " < ";
+                sonucEditText.Visibility = Visibility.Visible;
+                sonucKaydet.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                sonucEdit.Content = " > ";
+                sonucEditText.Visibility = Visibility.Hidden;
+                sonucKaydet.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void sonucKaydet_Click(object sender, RoutedEventArgs e)
+        {
+            string yeni = sonucEditText.Text;
+            int index = Convert.ToInt16(tiklanan.Tag);
+            if (yeni == basvurus[index].Sonuc)
+            {
+                changeTextAsync("Sonuc aynı.");
+                return;
+            }
+
+            string id = basvurus[index].Id.ToString();
+
+            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
+            conn.Open();
+            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set sonuc = '" + yeni + "' where id = '" + id + "' ", conn);
+            command.ExecuteNonQuery();
+            basvurus[index].Sonuc = yeni;
+
+            sonuc.Text = yeni;
+            conn.Dispose();
+            degisimGuncelle(index);
+            changeTextAsync("Değiştirildi.");
+        }
+
+        
+        private void linkEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (linkEdit.Content.ToString() == " > ")
+            {
+                linkEdit.Content = " < ";
+                linkEditText.Visibility = Visibility.Visible;
+                linkKaydet.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                linkEdit.Content = " > ";
+                linkEditText.Visibility = Visibility.Hidden;
+                linkKaydet.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void linkKaydet_Click(object sender, RoutedEventArgs e)
+        {
+            string yeni = linkEditText.Text;
+            int index = Convert.ToInt16(tiklanan.Tag);
+            if (yeni == basvurus[index].Link)
+            {
+                changeTextAsync("Link aynı.");
+                return;
+            }
+            string id = basvurus[index].Id.ToString();
+
+            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
+            conn.Open();
+            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set link = '" + yeni + "' where id = '" + id + "' ", conn);
+            command.ExecuteNonQuery();
+            basvurus[index].Link = yeni;
+
+            link.Text = yeni;
+            conn.Dispose();
+            degisimGuncelle(index);
+            changeTextAsync("Değiştirildi.");
+        }
+
+        private void bittiEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (bittiEdit.Content.ToString() == " > ")
+            {
+                bittiEdit.Content = " < ";
+                bittiEditCB.Visibility = Visibility.Visible;
+                bittiKaydet.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                bittiEdit.Content = " > ";
+                bittiEditCB.Visibility = Visibility.Hidden;
+                bittiKaydet.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void bittiKaydet_Click(object sender, RoutedEventArgs e)
+        {
+            int yeni;
+            if (bittiEditCB.IsChecked == true) { yeni = 1; }
+            else { yeni = 0; }
+            int index = Convert.ToInt16(tiklanan.Tag);
+            if (yeni == basvurus[index].Bitti)
+            {
+                return;
+            }
+            string id = basvurus[index].Id.ToString();
+
+            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
+            conn.Open();
+
+            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set bitti = '" + yeni + "' where id = '" + id + "' ", conn);
+            command.ExecuteNonQuery();
+
+            basvurus[index].Bitti = yeni;
+            bitti.Text = basvurus[index].bittiToString();
+            ChangeButton(tiklanan, basvurus[index].Isim, yeni);
+
+            conn.Dispose();
+            degisimGuncelle(index);
+
             changeTextAsync("Değiştirildi.");
         }
 
@@ -330,84 +546,9 @@ namespace latest_point
             silDurum.Text = "";
         }
 
-        private void linkEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (linkEdit.Content.ToString() == " > ")
-            {
-                linkEdit.Content = " < ";
-                linkEditText.Visibility = Visibility.Visible;
-                linkKaydet.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                linkEdit.Content = " > ";
-                linkEditText.Visibility = Visibility.Hidden;
-                linkKaydet.Visibility = Visibility.Hidden;
-            }
-        }
+        
 
-        private void linkKaydet_Click(object sender, RoutedEventArgs e)
-        {
-            string yeni = linkEditText.Text;
-            int index = Convert.ToInt16(tiklanan.Tag);
-            if (yeni == basvurus[index].Link)
-            {
-                changeTextAsync("Link aynı.");
-                return;
-            }
-            string id = basvurus[index].Id.ToString();
-
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set link = '" + yeni + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
-            basvurus[index].Link = yeni;
-
-            link.Text = yeni;
-            conn.Dispose();
-            degisimGuncelle(index);
-            changeTextAsync("Değiştirildi.");
-        }
-
-        private void sonucKaydet_Click(object sender, RoutedEventArgs e)
-        {
-            string yeni = sonucEditText.Text;
-            int index = Convert.ToInt16(tiklanan.Tag);
-            if (yeni == basvurus[index].Sonuc)
-            {
-                changeTextAsync("Sonuc aynı.");
-                return;
-            }
-
-            string id = basvurus[index].Id.ToString();
-            
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set sonuc = '" + yeni + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
-            basvurus[index].Sonuc = yeni;
-
-            sonuc.Text = yeni;
-            conn.Dispose();
-            degisimGuncelle(index);
-            changeTextAsync("Değiştirildi.");
-        }
-
-        private void sonucEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (sonucEdit.Content.ToString() == " > ")
-            {
-                sonucEdit.Content = " < ";
-                sonucEditText.Visibility = Visibility.Visible;
-                sonucKaydet.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                sonucEdit.Content = " > ";
-                sonucEditText.Visibility = Visibility.Hidden;
-                sonucKaydet.Visibility = Visibility.Hidden;
-            }
-        }
+        
 
         private void linkHyper_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
@@ -415,58 +556,7 @@ namespace latest_point
             e.Handled = true;
         }
 
-        private void isimKaydet_Click(object sender, RoutedEventArgs e)
-        {
-            string yeni = isimEditText.Text;
-
-            if (yeni == "")
-            {
-                changeTextAsync("İsim boş olamaz.");
-                return;
-            }
-            int index = Convert.ToInt16(tiklanan.Tag);
-            if (yeni == basvurus[index].Isim)
-            {
-                changeTextAsync("İsim aynı.");
-                return;
-            }
-            string id = basvurus[index].Id.ToString();            
-
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-            
-            
-            
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set isim = '" + yeni + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
-
-            basvurus[index].Isim = yeni;
-            isim.Text = yeni;
-            tiklanan.Content = yeni;
-
-            conn.Dispose();
-            degisimGuncelle(index);
-
-            changeTextAsync("Değiştirildi.");
-        }
-
-        private void isimEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (isimEdit.Content.ToString() == " > ")
-            {
-                isimEdit.Content = " < ";
-                isimEditText.Visibility = Visibility.Visible;
-                isimEditText.Width = 120;
-                isimKaydet.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                isimEdit.Content = " > ";
-                isimEditText.Visibility = Visibility.Hidden;
-                isimEditText.Width = 0;
-                isimKaydet.Visibility = Visibility.Hidden;
-            }
-        }
+        
 
         private void IsimPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -479,79 +569,6 @@ namespace latest_point
         {
             e.Handled = e.Key == Key.Space;            
         }
-
-        private Button GenerateButton(string isim, int done)
-        {
-            Button yeniButon = new Button();
-            Grid yeniGrid = new Grid();
-            ColumnDefinition column0 = new ColumnDefinition();
-            ColumnDefinition column1 = new ColumnDefinition();
-            column0.Width = new GridLength(btnsWidth.Width.Value - 15);
-
-            yeniGrid.ColumnDefinitions.Add(column0);
-            yeniGrid.ColumnDefinitions.Add(column1);
-
-            TextBlock butonIsim = new TextBlock();
-            butonIsim.Text = isim;
-            
-            TextBlock bitti = new TextBlock();
-            if (done == 1) { bitti.Text = "✓"; }
-
-            butonIsim.HorizontalAlignment = HorizontalAlignment.Center;
-            bitti.HorizontalAlignment = HorizontalAlignment.Right;
-
-            Grid.SetColumn(bitti, 1);
-
-            yeniGrid.Children.Add(butonIsim);
-            yeniGrid.Children.Add(bitti);
-
-            yeniButon.Content = yeniGrid;
-            yeniButon.Margin = new Thickness(0, 5, 0, 0);
-
-            return yeniButon;
-        }
-
-        private void bittiEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (bittiEdit.Content.ToString() == " > ")
-            {
-                bittiEdit.Content = " < ";
-                bittiEditCB.Visibility = Visibility.Visible;
-                bittiKaydet.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                bittiEdit.Content = " > ";
-                bittiEditCB.Visibility = Visibility.Hidden;
-                bittiKaydet.Visibility = Visibility.Hidden;
-            }
-        }
-
-        private void bittiKaydet_Click(object sender, RoutedEventArgs e)
-        {
-            int yeni;
-            if (bittiEditCB.IsChecked == true) { yeni = 1; }
-            else { yeni = 0; }
-            int index = Convert.ToInt16(tiklanan.Tag);
-            if (yeni == basvurus[index].Bitti)
-            {
-                return;
-            }
-            string id = basvurus[index].Id.ToString();
-
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set bitti = '" + yeni + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
-
-            basvurus[index].Bitti = yeni;
-            bitti.Text = basvurus[index].bittiToString();
-
-            conn.Dispose();
-            degisimGuncelle(index);
-
-            changeTextAsync("Değiştirildi.");
-        }
+        
     }
 }
