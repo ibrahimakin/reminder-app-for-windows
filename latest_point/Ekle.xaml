@@ -13,9 +13,9 @@
         </Grid.ColumnDefinitions>
         <Frame x:Name="yeniEkle" Grid.ColumnSpan="2" NavigationUIVisibility="Hidden"/>
         <StackPanel Grid.Row="1" Orientation="Vertical">
-            <RadioButton HorizontalAlignment="Center" Margin="0,55,0,0" x:Name="checkKitap"   Content="Kitap"   Checked="CheckKitap_Checked"/>
-            <RadioButton HorizontalAlignment="Center" Margin="0,55,0,0" x:Name="checkVideo"   Content="Video"   Checked="CheckVideo_Checked" IsChecked="True"/>
-            <RadioButton HorizontalAlignment="Center" Margin="0,55,0,0" x:Name="checkBasvuru" Content="Başvuru" Checked="CheckBasvuru_Checked"/>
+            <RadioButton HorizontalAlignment="Center" Margin="0,55,0,0" x:Name="checkKitap"   Content="Kitap"    Checked="CheckKitap_Checked"/>
+            <RadioButton HorizontalAlignment="Center" Margin="0,55,0,0" x:Name="checkVideo"   Content="Video"    Checked="CheckVideo_Checked" IsChecked="True"/>
+            <RadioButton HorizontalAlignment="Center" Margin="0,55,0,0" x:Name="checkBasvuru" Content="Etkinlik" Checked="CheckBasvuru_Checked"/>
         </StackPanel>
     </Grid>
 </UserControl>
