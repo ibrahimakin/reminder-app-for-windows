@@ -18,9 +18,11 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,0,0,0" FontSize="16" FontFamily="Arial" Text="Başvuru"/>
-        <StackPanel Grid.Row="1" x:Name="butonlar"/>
-        
+        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,0,0,0" FontSize="16" FontFamily="Arial" Text="Etkinlik"/>
+        <StackPanel Grid.Row="1" x:Name="butonlar">
+            <StackPanel x:Name="bitenButonlar"/>
+        </StackPanel>
+
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>

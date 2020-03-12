@@ -35,7 +35,6 @@ namespace latest_point
             try
             {
                 SQLiteDataReader rdr = command.ExecuteReader();
-                int i = 0;
                 int id = 0;
                 string isim = " ";
                 int bitti = 0;
@@ -52,15 +51,8 @@ namespace latest_point
 
                     basvuru item = new basvuru(id, isim, rdr["kayit"].ToString(), rdr["son"].ToString(), rdr["sonuc"].ToString(), rdr["link"].ToString(), bitti, rdr["baslangic"].ToString(), rdr["degisim"].ToString());
                     basvurus.Add(item);
-
-                    Button YeniButon = GenerateButton(isim, bitti);
-                                        
-                    YeniButon.Tag = i.ToString();
-                    YeniButon.Click += new RoutedEventHandler(YeniButon_Click);
-                    butonlar.Children.Add(YeniButon);
-
-                    i++;
                 }
+                fillButtonList();
             }
             catch (Exception /*e*/)
             {
@@ -130,7 +122,28 @@ namespace latest_point
             Iptal_Click(sender, e);
         }
 
-        
+        private void fillButtonList()
+        {
+            int i = 0;
+            int bitti = 0;
+            foreach (basvuru item in basvurus)
+            {
+                bitti = item.Bitti;
+                Button YeniButon = GenerateButton(item.Isim, bitti);
+                YeniButon.Tag = i.ToString();
+                YeniButon.Click += new RoutedEventHandler(YeniButon_Click);
+                if(bitti == 0)
+                {
+                    butonlar.Children.Add(YeniButon);
+                }
+                else
+                {
+                    bitenButonlar.Children.Add(YeniButon);
+                }
+                i++;
+            }
+        }
+
         private Button GenerateButton(string isim, int done)
         {
             Button yeniButon = new Button();
