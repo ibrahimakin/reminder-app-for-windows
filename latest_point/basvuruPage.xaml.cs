@@ -132,13 +132,13 @@ namespace latest_point
                 Button YeniButon = GenerateButton(item.Isim, bitti);
                 YeniButon.Tag = i.ToString();
                 YeniButon.Click += new RoutedEventHandler(YeniButon_Click);
-                if(bitti == 0)
+                if(bitti == 1)
                 {
                     butonlar.Children.Add(YeniButon);
                 }
                 else
                 {
-                    bitenButonlar.Children.Add(YeniButon);
+                    bitmeyenButonlar.Children.Add(YeniButon);
                 }
                 i++;
             }
@@ -484,8 +484,9 @@ namespace latest_point
             
             //butonlar.Children.Remove(tiklanan);  //index=tag bozulur.
             butonlar.Children.Clear();
+            bitmeyenButonlar.Children.Clear();
             bilgiTemizle();
-            Listele();
+            fillButtonList();
         }
 
         private void Iptal_Click(object sender, RoutedEventArgs e)

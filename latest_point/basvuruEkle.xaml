@@ -16,7 +16,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,0,0,0" FontSize="16" FontFamily="Arial" Text="Başvuru Ekle"/>
+        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" Margin="50,0,0,0" FontSize="16" FontFamily="Arial" Text="Etkinlik   Ekle"/>
         
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
