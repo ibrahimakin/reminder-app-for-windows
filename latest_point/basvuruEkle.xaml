@@ -42,17 +42,17 @@
 
             <TextBlock   Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0" Text="Başvuru"/>
             <StackPanel  Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                <TextBox Height="25"  Width="120" PreviewKeyDown="EklePreviewKeyDown" PreviewTextInput="EklePreviewTextInput" x:Name="kayit_tb"/>
+                <DatePicker VerticalAlignment="Center" Width="120" x:Name="kayit_tb"></DatePicker>
             </StackPanel>
 
             <TextBlock   Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0" Text="Son Başvuru"/>
             <StackPanel  Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                <TextBox Height="25"  Width="120" PreviewKeyDown="EklePreviewKeyDown" PreviewTextInput="EklePreviewTextInput" x:Name="son_tb"/>
+                <DatePicker VerticalAlignment="Center" Width="120" x:Name="son_tb"></DatePicker>
             </StackPanel>
 
             <TextBlock   Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0" Text="Sonuç Tarihi"/>
             <StackPanel  Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                <TextBox Height="25"  Width="120" PreviewKeyDown="IsimPreviewKeyDown" x:Name="sonuc_tb"/>
+                <DatePicker VerticalAlignment="Center" Width="120" x:Name="sonuc_tb"></DatePicker>
             </StackPanel>
 
             <TextBlock   Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50,0,0,0" Text="Link"/>
