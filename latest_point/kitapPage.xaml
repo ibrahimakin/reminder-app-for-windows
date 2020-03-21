@@ -40,11 +40,11 @@
 
             <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="İsim" x:Name="isimText"/>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" x:Name="isim"/>
+                <TextBlock VerticalAlignment="Center" MouseDown="isimEdit_Click" x:Name="isim"/>
                 <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="isimEdit_Click" x:Name="isimEdit"/>
                 <TextBox   HorizontalAlignment="Left" Visibility="Hidden" Height="25" Width="0" PreviewKeyDown="IsimPreviewKeyDown" x:Name="isimEditText"/>
                 <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Content=" ✓ " Click="isimKaydet_Click" x:Name="isimKaydet"/>
-                <TextBlock VerticalAlignment="Center" x:Name="bitti" FontSize="30"/>
+                <TextBlock VerticalAlignment="Center" x:Name="bitti" MouseDown="bittiEdit_Click" FontSize="30"/>
                 <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Margin="10,0,0,0" Content=" > " Click="bittiEdit_Click" x:Name="bittiEdit"/>
                 <CheckBox  VerticalAlignment="Center" Visibility="Hidden" Margin="5,0,5,0" x:Name="bittiEditCB"/>
                 <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Content=" ✓ " Click="bittiKaydet_Click" x:Name="bittiKaydet"/>
@@ -52,7 +52,7 @@
 
             <TextBlock  Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Sayfa" x:Name="sayfaText"/>
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="sayfa"/>
+                <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" MouseDown="SayfaEdit_Click" x:Name="sayfa"/>
                 <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="SayfaEdit_Click" x:Name="sayfaEdit"/>
                 <TextBox   HorizontalAlignment="Left" Visibility="Hidden" Height="25" Width="120" PreviewKeyDown="EditPreviewKeyDown" PreviewTextInput="SayfaPreviewTextInput" x:Name="sayfaEditText"/>
                 <Button    HorizontalAlignment="Left" Visibility="Hidden" Height="25" Content=" ✓ " Click="SayfaKaydet_Click" x:Name="sayfaKaydet"/>
