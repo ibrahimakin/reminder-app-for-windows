@@ -10,12 +10,12 @@ namespace latest_point
         public MainWindow()
         {
             InitializeComponent();
-            DBconnection.ConnTest();
-            ConnState.Content = DBconnection.ConnState;
-            if (!DBconnection.durum)
+            Database.DatabaseOperations.openConn();
+            if (!Database.DatabaseOperations.getState())
             {
                 kitapButon.IsEnabled = false;
                 videoButon.IsEnabled = false;
+                ConnState.Content = "Veritabanı bağlanamadı.";
             }
             //ConnState.Content = DBconnection.ConnState;
             // XML'de x:Name = "btnEkle"

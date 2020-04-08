@@ -26,52 +26,29 @@ namespace latest_point
             string son = son_tb.Text;
             string link = link_tb.Text;
             string sonuc = sonuc_tb.Text;
-            string now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+
             if (isim == "")
             {
                 changeTextAsync("İsim boş olamaz.");
                 return;
             }
-            SQLiteCommand command = new SQLiteCommand("insert into Table_Basvuru (isim, kayit, son, link, sonuc, baslangic, degisim) values ('" + isim + "', '" + kayit + "', '" + son + "', '" + link + "', '" + sonuc + "', '" + now + "', '" + now + "');", conn);
 
             try
             {
-                command.ExecuteNonQuery();
+                Database.TableEtkinlik.AddToTable(isim, kayit, son, link, sonuc);
                 changeTextAsync("Kaydedildi.");
-                //ekleDurum.Text = "Kaydedildi.";
             }
             catch (System.Data.SQLite.SQLiteException)
             {
-                if (!DBconnection.durum)
+                if (!Database.DatabaseOperations.getState())
                 {
                     changeTextAsync("Veritabanı bağlanamadı.");
                 }
                 else { changeTextAsync("Kayıt mevcut."); }
-                //ekleDurum.Text = "Kayıt mevcut.";
             }
-
-            conn.Dispose();
         }
 
-        private void EklePreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
 
-            var textBox = sender as TextBox;
-            if (textBox.GetLineLength(0) < 1 || textBox.Text.Contains(','))
-            {
-                e.Handled = Regex.IsMatch(e.Text, "[^0-9]");
-                return;
-            }
-            e.Handled = Regex.IsMatch(e.Text, "[^0-9,0-9]");
-
-        }
-
-        private void EklePreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            e.Handled = e.Key == Key.Space;
-        }
 
         private void IsimPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -93,5 +70,4 @@ namespace latest_point
             ekleDurum.Text = "";
         }
     }
-
 }

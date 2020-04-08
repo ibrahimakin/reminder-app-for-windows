@@ -19,7 +19,7 @@
                 <Button VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,0,0" Width="75" x:Name="videoButon"   Content="Video"    Click="BtnVideo_Click"/>
                 <Button VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,50,0,0" Width="75" x:Name="basvuruButon" Content="Etkinlik" Click="basvuruButon_Click"/>
             </StackPanel>
-            <Label  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,365,0,0" x:Name="ConnState" Content="Veritabanı bağlanamadı."/>
+            <Label  VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,365,0,0" x:Name="ConnState"/>
             <Button VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,390,0,0" x:Name="ekleButon" Content="Ekle" Width="76" Click="BtnEkle_Click"/>
         </Grid>
         <Frame x:Name="eklePage" Grid.Column="1" NavigationUIVisibility="Hidden"/>

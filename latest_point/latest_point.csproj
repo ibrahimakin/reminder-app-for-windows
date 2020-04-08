@@ -101,6 +101,11 @@
       <DependentUpon>basvuruPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="currentPage.cs" />
+    <Compile Include="Database\DatabaseOperations.cs" />
+    <Compile Include="Database\IDatabaseOperations.cs" />
+    <Compile Include="Database\TableEtkinlik.cs" />
+    <Compile Include="Database\TableKitap.cs" />
+    <Compile Include="Database\TableVideo.cs" />
     <Compile Include="DBconnection.cs" />
     <Compile Include="Ekle.xaml.cs">
       <DependentUpon>Ekle.xaml</DependentUpon>
