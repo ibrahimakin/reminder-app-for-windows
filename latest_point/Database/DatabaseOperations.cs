@@ -9,7 +9,7 @@ namespace latest_point.Database
         private static SQLiteConnection conn;
         private static bool ConnState;
 
-        public static void openConn()
+        public static void OpenConn()
         {
             try
             {
@@ -25,7 +25,12 @@ namespace latest_point.Database
             }
         }
 
-        public static bool getState()
+        public static void CloseConn()
+        {
+            conn.Dispose();
+        }
+
+        public static bool GetState()
         {
             return ConnState;
         }
@@ -35,20 +40,17 @@ namespace latest_point.Database
             return conn;
         }
 
-        public static void addToTable(string commandText)
+        public static void UpdateTable(string commandText)
         {
             SQLiteCommand command = new SQLiteCommand(commandText, conn);
             command.ExecuteNonQuery();
         }
 
-        public static void deleteFromTable()
+        public static SQLiteDataReader GetItems(string commandText)
         {
-
-        }
-
-        public static void rowUpdate()
-        {
-
+            SQLiteCommand command = new SQLiteCommand(commandText, conn);
+            SQLiteDataReader rdr = command.ExecuteReader();
+            return rdr;
         }
     }
 }

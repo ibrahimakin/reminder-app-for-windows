@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,39 +28,15 @@ namespace latest_point
 
         public void Listele()
         {
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-            SQLiteCommand command = new SQLiteCommand("select * from Table_Basvuru", conn);
             try
             {
-                SQLiteDataReader rdr = command.ExecuteReader();
-                int id = 0;
-                string isim = " ";
-                int bitti = 0;
-                while (rdr.Read())
-                {
-
-                    id = Convert.ToInt32(rdr["id"]);
-                    isim = rdr["isim"].ToString();
-                    try
-                    {
-                        bitti = Convert.ToInt32(rdr["bitti"]);
-                    }
-                    catch (Exception) { bitti = 0; }
-
-                    basvuru item = new basvuru(id, isim, rdr["kayit"].ToString(), rdr["son"].ToString(), rdr["sonuc"].ToString(), rdr["link"].ToString(), bitti, rdr["baslangic"].ToString(), rdr["degisim"].ToString());
-                    basvurus.Add(item);
-                }
+                basvurus = Database.TableEtkinlik.GetItems();
                 fillButtonList();
             }
             catch (Exception /*e*/)
             {
                 MessageBox.Show("Veritabanı bağlanamadı.");
                 //MessageBox.Show(e.ToString());
-            }
-            finally
-            {
-                conn.Dispose();
             }
         }
 
@@ -214,19 +189,12 @@ namespace latest_point
             }
             string id = basvurus[index].Id.ToString();
 
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-
-
-
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set isim = '" + yeni + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
+            Database.TableEtkinlik.UpdateRow(yeni, "isim", id);
 
             basvurus[index].Isim = yeni;
             isim.Text = yeni;
             tiklanan.Content = yeni;
 
-            conn.Dispose();
             degisimGuncelle(index);
 
             changeTextAsync("Değiştirildi.");
@@ -261,14 +229,12 @@ namespace latest_point
             }
             string id = basvurus[index].Id.ToString();
 
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set kayit = '" + yeni + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
+            Database.TableEtkinlik.UpdateRow(yeni, "kayit", id);
+
             basvurus[index].Kayit = yeni;
 
             kayit.Text = yeni;
-            conn.Dispose();
+
             degisimGuncelle(index);
             changeTextAsync("Değiştirildi.");
         }
@@ -299,15 +265,13 @@ namespace latest_point
                 return;
             }
             string id = basvurus[index].Id.ToString();
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set son = '" + yeni + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
-            basvurus[index].Son = yeni;
 
+            Database.TableEtkinlik.UpdateRow(yeni, "son", id);
+
+            basvurus[index].Son = yeni;
             son.Text = yeni;
-            conn.Dispose();
             degisimGuncelle(index);
+
             changeTextAsync("Değiştirildi.");
         }
 
@@ -339,14 +303,10 @@ namespace latest_point
 
             string id = basvurus[index].Id.ToString();
 
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set sonuc = '" + yeni + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
-            basvurus[index].Sonuc = yeni;
+            Database.TableEtkinlik.UpdateRow(yeni, "sonuc", id);
 
+            basvurus[index].Sonuc = yeni;
             sonuc.Text = yeni;
-            conn.Dispose();
             degisimGuncelle(index);
             changeTextAsync("Değiştirildi.");
         }
@@ -379,14 +339,10 @@ namespace latest_point
             }
             string id = basvurus[index].Id.ToString();
 
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set link = '" + yeni + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
-            basvurus[index].Link = yeni;
+            Database.TableEtkinlik.UpdateRow(yeni, "link", id);
 
+            basvurus[index].Link = yeni;
             link.Text = yeni;
-            conn.Dispose();
             degisimGuncelle(index);
             changeTextAsync("Değiştirildi.");
         }
@@ -419,17 +375,12 @@ namespace latest_point
             }
             string id = basvurus[index].Id.ToString();
 
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set bitti = '" + yeni + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
+            Database.TableEtkinlik.UpdateRow(yeni.ToString(), "bitti", id);
 
             basvurus[index].Bitti = yeni;
             bitti.Text = basvurus[index].bittiToString();
             ChangeButton(tiklanan, basvurus[index].Isim, yeni);
 
-            conn.Dispose();
             degisimGuncelle(index);
 
             changeTextAsync("Değiştirildi.");
@@ -437,26 +388,9 @@ namespace latest_point
 
         void degisimGuncelle(int index)
         {
-            string id = basvurus[index].Id.ToString();
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
             string now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
             degisim.Text = now;
-            SQLiteCommand command = new SQLiteCommand("update Table_Basvuru set degisim = '" + degisim.Text + "' where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
             basvurus[index].Degisim = now;
-            conn.Dispose();
-        }
-
-        private void EditPreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-
-            //e.Handled = Regex.IsMatch(e.Text, "^(0[1 - 9] |[12][0 - 9] | 3[01])[- /.](0[1 - 9] | 1[012])[- /.](19 | 20)");
-        }
-
-        private void EditPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            e.Handled = e.Key == Key.Space;
         }
 
         private void VideoSilBtn_Click(object sender, RoutedEventArgs e)
@@ -473,11 +407,7 @@ namespace latest_point
         {
             int index = Convert.ToInt16(tiklanan.Tag);
             string id = basvurus[index].Id.ToString();
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
-            SQLiteCommand command = new SQLiteCommand("delete from Table_Basvuru where id = '" + id + "' ", conn);
-            command.ExecuteNonQuery();
-            conn.Dispose();
+            Database.TableEtkinlik.DeleteFromTable(id);
             basvurus.RemoveAt(index);
 
             changeTextAsync("Silindi.");

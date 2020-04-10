@@ -1,10 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Data.SQLite;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 
@@ -40,7 +36,7 @@ namespace latest_point
             }
             catch (System.Data.SQLite.SQLiteException)
             {
-                if (!Database.DatabaseOperations.getState())
+                if (!Database.DatabaseOperations.GetState())
                 {
                     changeTextAsync("Veritabanı bağlanamadı.");
                 }

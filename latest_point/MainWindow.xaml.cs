@@ -10,8 +10,8 @@ namespace latest_point
         public MainWindow()
         {
             InitializeComponent();
-            Database.DatabaseOperations.openConn();
-            if (!Database.DatabaseOperations.getState())
+            Database.DatabaseOperations.OpenConn();
+            if (!Database.DatabaseOperations.GetState())
             {
                 kitapButon.IsEnabled = false;
                 videoButon.IsEnabled = false;
