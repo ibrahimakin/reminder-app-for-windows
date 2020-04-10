@@ -9,7 +9,7 @@ namespace latest_point.Database
         public static void AddToTable(string isim, string kayit, string son, string link, string sonuc)
         {
             string now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            string commandText = "insert into Table_Basvuru (isim, kayit, son, link, sonuc, baslangic, degisim, bitti, arsiv) values ('" + isim + "', '" + kayit + "', '" + son + "', '" + link + "', '" + sonuc + "', '" + now + "', '" + now + ", 0, 0');";
+            string commandText = "insert into Table_Basvuru (isim, kayit, son, sonuc, link, bitti, baslangic, degisim, arsiv) values ('" + isim + "', '" + kayit + "', '" + son + "', '" + sonuc + "', '" + link + "', 0, '" + now + "', '" + now + "', 0);";
             DatabaseOperations.UpdateTable(commandText);
         }
 
@@ -19,7 +19,7 @@ namespace latest_point.Database
             SQLiteDataReader rdr = DatabaseOperations.GetItems(commandText);
 
             List<basvuru> basvurus = new List<basvuru>();
-            int id, bitti;
+            int id, bitti, arsiv;
             string isim, kayit, son, sonuc, link, baslangic, degisim;
 
             while (rdr.Read())
@@ -30,15 +30,12 @@ namespace latest_point.Database
                 son = rdr["son"].ToString();
                 sonuc = rdr["sonuc"].ToString();
                 link = rdr["link"].ToString();
+                bitti = Convert.ToInt32(rdr["bitti"]);
                 baslangic = rdr["baslangic"].ToString();
                 degisim = rdr["degisim"].ToString();
-                try
-                {
-                    bitti = Convert.ToInt32(rdr["bitti"]);
-                }
-                catch (Exception) { bitti = 0; }
+                arsiv = Convert.ToInt32(rdr["arsiv"]);
 
-                basvuru item = new basvuru(id, isim, kayit, son, sonuc, link, bitti, baslangic, degisim);
+                basvuru item = new basvuru(id, isim, kayit, son, sonuc, link, bitti, baslangic, degisim, arsiv);
                 basvurus.Add(item);
             }
             return basvurus;

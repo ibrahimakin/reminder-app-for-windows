@@ -9,26 +9,24 @@ namespace latest_point.Database
         public static void AddToTable(string isim, string sayfa, string link)
         {
             string now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            string commandText = "insert into Table_Kitap (isim, sayfa, baslangic, degisim) values ('" + isim + "', '" + sayfa + "', '" + now + "', '" + now + "');";
+            string commandText = "insert into Table_Kitap (isim, sayfa, link, bitti, baslangic, degisim, arsiv) values ('" + isim + "', '" + sayfa + "', '" + link + "', '" + now + "', '" + now + "', '0');";
             DatabaseOperations.UpdateTable(commandText);
         }
 
-        public static List<basvuru> GetItems()
+        public static List<kitap> GetItems()
         {
-            string commandText = "select * from Table_Basvuru";
+            string commandText = "select * from Table_Kitap";
             SQLiteDataReader rdr = DatabaseOperations.GetItems(commandText);
 
-            List<basvuru> basvurus = new List<basvuru>();
-            int id, bitti;
-            string isim, kayit, son, sonuc, link, baslangic, degisim;
+            List<kitap> kitaps = new List<kitap>();
+            int id, bitti, sayfa;
+            string isim, link, baslangic, degisim;
 
             while (rdr.Read())
             {
                 id = Convert.ToInt32(rdr["id"]);
                 isim = rdr["isim"].ToString();
-                kayit = rdr["kayit"].ToString();
-                son = rdr["son"].ToString();
-                sonuc = rdr["sonuc"].ToString();
+                sayfa = Convert.ToInt16(rdr["sayfa"]);
                 link = rdr["link"].ToString();
                 baslangic = rdr["baslangic"].ToString();
                 degisim = rdr["degisim"].ToString();
@@ -38,10 +36,10 @@ namespace latest_point.Database
                 }
                 catch (Exception) { bitti = 0; }
 
-                basvuru item = new basvuru(id, isim, kayit, son, sonuc, link, bitti, baslangic, degisim);
-                basvurus.Add(item);
+                kitap item = new kitap(id, isim, sayfa, link, bitti ,baslangic, degisim);
+                kitaps.Add(item);
             }
-            return basvurus;
+            return kitaps;
         }
 
         public static void DeleteFromTable(string id)

@@ -8,16 +8,8 @@ namespace latest_point
 {
     class basvuru
     {
-        int id;
-        string isim;
-        string kayit;
-        string son;
-        string sonuc;
-        string link;
-        int bitti;
-        string baslangic;
-        string degisim;
-
+        int id, bitti, arsiv;
+        string isim, kayit, son, sonuc, link, baslangic, degisim;
 
         public basvuru(int id, string isim, string baslangic, string degisim)
         {
@@ -27,7 +19,7 @@ namespace latest_point
             this.degisim = degisim;
         }
 
-        public basvuru(int id, string isim, string kayit, string son, string sonuc, string link, int bitti, string baslangic, string degisim)
+        public basvuru(int id, string isim, string kayit, string son, string sonuc, string link, int bitti, string baslangic, string degisim, int arsiv)
         {
             this.id = id;
             this.isim = isim;
@@ -38,6 +30,7 @@ namespace latest_point
             this.bitti = bitti;
             this.baslangic = baslangic;
             this.degisim = degisim;
+            this.arsiv = arsiv;
         }
 
         public int Id { get => id; set => id = value; }
@@ -49,6 +42,7 @@ namespace latest_point
         public int Bitti { get => bitti; set => bitti = value; }
         public string Baslangic { get => baslangic; set => baslangic = value; }
         public string Degisim { get => degisim; set => degisim = value; }
+        public int Arsiv { get => arsiv; set => arsiv = value; }
 
         public string bittiToString()
         {

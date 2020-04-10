@@ -14,7 +14,11 @@ namespace latest_point
     /// </summary>
     public partial class basvuruPage : UserControl
     {
+
         List<basvuru> basvurus = new List<basvuru>();
+
+        List<Button> buttons = new List<Button>();
+
         Button tiklanan;
         public basvuruPage()
         {
@@ -59,7 +63,7 @@ namespace latest_point
             videoSilBtn.Visibility = Visibility.Visible;
 
             tiklanan = (Button)sender;
-            int i = Convert.ToInt16(tiklanan.Tag);
+            int i = buttons.IndexOf(tiklanan);
 
             isim.Text = basvurus[i].Isim;
             bitti.Text = basvurus[i].bittiToString();
@@ -73,9 +77,9 @@ namespace latest_point
 
             if (basvurus[i].Bitti == 1)
             {
-                bittiEditCB.IsChecked = true;
+                bittiEditText.IsChecked = true;
             }
-            else { bittiEditCB.IsChecked = false; }
+            else { bittiEditText.IsChecked = false; }
 
             try
             {
@@ -109,12 +113,13 @@ namespace latest_point
                 YeniButon.Click += new RoutedEventHandler(YeniButon_Click);
                 if(bitti == 1)
                 {
-                    butonlar.Children.Add(YeniButon);
+                    bitenButonlar.Children.Add(YeniButon);
                 }
                 else
                 {
                     bitmeyenButonlar.Children.Add(YeniButon);
                 }
+                buttons.Add(YeniButon);
                 i++;
             }
         }
@@ -154,24 +159,6 @@ namespace latest_point
             buton.Margin = new Thickness(0, 5, 0, 0);
         }
 
-        private void isimEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (isimEdit.Content.ToString() == " > ")
-            {
-                isimEdit.Content = " < ";
-                isimEditText.Visibility = Visibility.Visible;
-                isimEditText.Width = 120;
-                isimKaydet.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                isimEdit.Content = " > ";
-                isimEditText.Visibility = Visibility.Hidden;
-                isimEditText.Width = 0;
-                isimKaydet.Visibility = Visibility.Hidden;
-            }
-        }
-
         private void isimKaydet_Click(object sender, RoutedEventArgs e)
         {
             string yeni = isimEditText.Text;
@@ -200,23 +187,6 @@ namespace latest_point
             changeTextAsync("Değiştirildi.");
         }
 
-        
-
-        private void KayitEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (kayitEdit.Content.ToString() == " > ")
-            {
-                kayitEdit.Content = " < ";
-                kayitEditText.Visibility = Visibility.Visible;
-                kayitKaydet.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                kayitEdit.Content = " > ";
-                kayitEditText.Visibility = Visibility.Hidden;
-                kayitKaydet.Visibility = Visibility.Hidden;
-            }
-        }
 
         private void KayitKaydet_Click(object sender, RoutedEventArgs e)
         {
@@ -239,21 +209,6 @@ namespace latest_point
             changeTextAsync("Değiştirildi.");
         }
 
-        private void SonEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (sonEdit.Content.ToString() == " > ")
-            {
-                sonEdit.Content = " < ";
-                sonEditText.Visibility = Visibility.Visible;
-                sonKaydet.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                sonEdit.Content = " > ";
-                sonEditText.Visibility = Visibility.Hidden;
-                sonKaydet.Visibility = Visibility.Hidden;
-            }
-        }
 
         private void SonKaydet_Click(object sender, RoutedEventArgs e)
         {
@@ -275,20 +230,62 @@ namespace latest_point
             changeTextAsync("Değiştirildi.");
         }
 
-        private void sonucEdit_Click(object sender, RoutedEventArgs e)
+        private void EditToggle(object sender, RoutedEventArgs e)
         {
-            if (sonucEdit.Content.ToString() == " > ")
+            string name;
+            Button be = sender as Button;
+            if (be == null)
             {
-                sonucEdit.Content = " < ";
-                sonucEditText.Visibility = Visibility.Visible;
-                sonucKaydet.Visibility = Visibility.Visible;
+                name = (sender as TextBlock).Name + "Edit";
+                be = ContentPanel.FindName(name) as Button;
             }
             else
             {
-                sonucEdit.Content = " > ";
-                sonucEditText.Visibility = Visibility.Hidden;
-                sonucKaydet.Visibility = Visibility.Hidden;
+                name = be.Name;
             }
+            
+            DatePicker dp = ContentPanel.FindName(name + "Text") as DatePicker;
+            TextBox tb = ContentPanel.FindName(name + "Text") as TextBox;
+            CheckBox cb = ContentPanel.FindName(name + "Text") as CheckBox;
+            Button bk = ContentPanel.FindName(name + "Kaydet") as Button;
+
+            if (be.Content.ToString() == " > ")
+            {
+                be.Content = " < ";
+                if (tb != null)
+                {
+                    tb.Visibility = Visibility.Visible;
+                    tb.Width = 120;
+                }
+                else if(dp != null)
+                {
+                    dp.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    cb.Visibility = Visibility.Visible;
+                }
+                bk.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                be.Content = " > ";
+                if (tb != null)
+                {
+                    tb.Visibility = Visibility.Hidden;
+                    tb.Width = 0;
+                }
+                else if(dp != null)
+                {
+                    dp.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    cb.Visibility = Visibility.Hidden;
+                }
+                bk.Visibility = Visibility.Hidden;
+            }
+            
         }
 
         private void sonucKaydet_Click(object sender, RoutedEventArgs e)
@@ -311,23 +308,6 @@ namespace latest_point
             changeTextAsync("Değiştirildi.");
         }
 
-        
-        private void linkEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (linkEdit.Content.ToString() == " > ")
-            {
-                linkEdit.Content = " < ";
-                linkEditText.Visibility = Visibility.Visible;
-                linkKaydet.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                linkEdit.Content = " > ";
-                linkEditText.Visibility = Visibility.Hidden;
-                linkKaydet.Visibility = Visibility.Hidden;
-            }
-        }
-
         private void linkKaydet_Click(object sender, RoutedEventArgs e)
         {
             string yeni = linkEditText.Text;
@@ -347,26 +327,11 @@ namespace latest_point
             changeTextAsync("Değiştirildi.");
         }
 
-        private void bittiEdit_Click(object sender, RoutedEventArgs e)
-        {
-            if (bittiEdit.Content.ToString() == " > ")
-            {
-                bittiEdit.Content = " < ";
-                bittiEditCB.Visibility = Visibility.Visible;
-                bittiKaydet.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                bittiEdit.Content = " > ";
-                bittiEditCB.Visibility = Visibility.Hidden;
-                bittiKaydet.Visibility = Visibility.Hidden;
-            }
-        }
 
         private void bittiKaydet_Click(object sender, RoutedEventArgs e)
         {
             int yeni;
-            if (bittiEditCB.IsChecked == true) { yeni = 1; }
+            if (bittiEditText.IsChecked == true) { yeni = 1; }
             else { yeni = 0; }
             int index = Convert.ToInt16(tiklanan.Tag);
             if (yeni == basvurus[index].Bitti)
@@ -405,18 +370,23 @@ namespace latest_point
 
         private void Onay_Click(object sender, RoutedEventArgs e)
         {
-            int index = Convert.ToInt16(tiklanan.Tag);
+            //int index = Convert.ToInt16(tiklanan.Tag);
+            int index = buttons.IndexOf(tiklanan);
             string id = basvurus[index].Id.ToString();
             Database.TableEtkinlik.DeleteFromTable(id);
             basvurus.RemoveAt(index);
+            buttons.RemoveAt(index);
+
+            
 
             changeTextAsync("Silindi.");
+
             
-            //butonlar.Children.Remove(tiklanan);  //index=tag bozulur.
-            butonlar.Children.Clear();
-            bitmeyenButonlar.Children.Clear();
+            bitmeyenButonlar.Children.Remove(tiklanan);
+            bitenButonlar.Children.Remove(tiklanan);
+            
+            
             bilgiTemizle();
-            fillButtonList();
         }
 
         private void Iptal_Click(object sender, RoutedEventArgs e)
@@ -426,6 +396,7 @@ namespace latest_point
             iptal.Visibility = Visibility.Hidden;
             videoSilBtn.Visibility = Visibility.Visible;
         }
+
 
         private void bilgiTemizle()
         {
@@ -441,38 +412,38 @@ namespace latest_point
             isimEdit.Content = " > ";
             isimEdit.Visibility = Visibility.Hidden;
             isimEditText.Visibility = Visibility.Hidden;
-            isimKaydet.Visibility = Visibility.Hidden;
+            isimEditKaydet.Visibility = Visibility.Hidden;
 
             kayit.Text = "";
             kayitEdit.Content = " > ";
             kayitEdit.Visibility = Visibility.Hidden;
             kayitEditText.Visibility = Visibility.Hidden;
-            kayitKaydet.Visibility = Visibility.Hidden;
+            kayitEditKaydet.Visibility = Visibility.Hidden;
 
             son.Text = "";
             sonEdit.Content = " > ";
             sonEdit.Visibility = Visibility.Hidden;
             sonEditText.Visibility = Visibility.Hidden;
-            sonKaydet.Visibility = Visibility.Hidden;
+            sonEditKaydet.Visibility = Visibility.Hidden;
 
             sonuc.Text = "";
             sonucEdit.Content = " > ";
             sonucEdit.Visibility = Visibility.Hidden;
             sonucEditText.Visibility = Visibility.Hidden;
-            sonucKaydet.Visibility = Visibility.Hidden;
+            sonucEditKaydet.Visibility = Visibility.Hidden;
 
             link.Text = "";
             linkEdit.Content = " > ";
             linkEdit.Visibility = Visibility.Hidden;
             linkEditText.Visibility = Visibility.Hidden;
-            linkKaydet.Visibility = Visibility.Hidden;
+            linkEditKaydet.Visibility = Visibility.Hidden;
 
             bitti.Text = "";
             bittiEdit.Content = " > ";
             bittiEdit.Visibility = Visibility.Hidden;
-            bittiEditCB.IsChecked = false;
-            bittiEditCB.Visibility = Visibility.Hidden;
-            bittiKaydet.Visibility = Visibility.Hidden;
+            bittiEditText.IsChecked = false;
+            bittiEditText.Visibility = Visibility.Hidden;
+            bittiEditKaydet.Visibility = Visibility.Hidden;
 
             baslangic.Text = "";
             degisim.Text = "";
@@ -490,17 +461,11 @@ namespace latest_point
             silDurum.Text = "";
         }
 
-        
-
-        
-
         private void linkHyper_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
         }
-
-        
 
         private void IsimPreviewKeyDown(object sender, KeyEventArgs e)
         {
