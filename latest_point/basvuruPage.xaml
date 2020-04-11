@@ -46,11 +46,11 @@
                 <TextBlock VerticalAlignment="Center" MouseDown="EditToggle" x:Name="isim"/>
                 <Button    Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="EditToggle" x:Name="isimEdit"/>
                 <TextBox   Visibility="Hidden" Height="25" Width="0" PreviewKeyDown="IsimPreviewKeyDown" x:Name="isimEditText"/>
-                <Button    Visibility="Hidden" Height="25" Content=" ✓ " Click="isimKaydet_Click" x:Name="isimEditKaydet"/>
+                <Button    Visibility="Hidden" Height="25" Content=" ✓ " Click="TBKaydetClick" x:Name="isimEditKaydet" Tag="isim"/>
                 <TextBlock VerticalAlignment="Center" x:Name="bitti" MouseDown="EditToggle" FontSize="30"/>
                 <Button    Visibility="Hidden" Height="25" Margin="10,0,0,0" Content=" > " Click="EditToggle" x:Name="bittiEdit"/>
                 <CheckBox  VerticalAlignment="Center" Visibility="Hidden" Margin="5,0,5,0" x:Name="bittiEditText"/>
-                <Button    Visibility="Hidden" Height="25" Content=" ✓ " Click="bittiKaydet_Click" x:Name="bittiEditKaydet"/>
+                <Button    Visibility="Hidden" Height="25" Content=" ✓ " Click="CBKaydetClick" x:Name="bittiEditKaydet" Tag="bitti"/>
             </StackPanel>
 
             <TextBlock  Grid.Row="1" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Başvuru" x:Name="kayitText"/>
@@ -58,7 +58,7 @@
                 <TextBlock  VerticalAlignment="Center" MouseDown="EditToggle" x:Name="kayit"/>
                 <Button     Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="EditToggle" x:Name="kayitEdit"/>
                 <DatePicker Visibility="Hidden" Height="25" Width="120" x:Name="kayitEditText"/>
-                <Button     Visibility="Hidden" Height="25" Content=" ✓ " Click="KayitKaydet_Click" x:Name="kayitEditKaydet"/>
+                <Button     Visibility="Hidden" Height="25" Content=" ✓ " Click="DPKaydetClick" x:Name="kayitEditKaydet" Tag="kayit"/>
             </StackPanel>
 
             <TextBlock  Grid.Row="2" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Son Başvuru" x:Name="sonText"/>
@@ -66,7 +66,7 @@
                 <TextBlock  VerticalAlignment="Center" MouseDown="EditToggle" x:Name="son"/>
                 <Button     Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="EditToggle" x:Name="sonEdit"/>
                 <DatePicker Visibility="Hidden" Height="25" Width="120" x:Name="sonEditText"/>
-                <Button     Visibility="Hidden" Height="25" Content=" ✓ " Click="SonKaydet_Click" x:Name="sonEditKaydet"/>
+                <Button     Visibility="Hidden" Height="25" Content=" ✓ " Click="DPKaydetClick" x:Name="sonEditKaydet" Tag="son"/>
             </StackPanel>
 
             <TextBlock  Grid.Row="3" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Sonuç Tarihi" x:Name="sonucText"/>
@@ -74,7 +74,7 @@
                 <TextBlock  VerticalAlignment="Center" MouseDown="EditToggle" x:Name="sonuc"/>
                 <Button     Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="EditToggle" x:Name="sonucEdit"/>
                 <DatePicker Visibility="Hidden" Height="25" Width="120" x:Name="sonucEditText"/>
-                <Button     Visibility="Hidden" Height="25" Content=" ✓ " Click="sonucKaydet_Click" x:Name="sonucEditKaydet"/>
+                <Button     Visibility="Hidden" Height="25" Content=" ✓ " Click="DPKaydetClick" x:Name="sonucEditKaydet" Tag="sonuc"/>
             </StackPanel>
 
             <TextBlock  Grid.Row="4" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Link" x:Name="linkText"/>
@@ -84,7 +84,7 @@
                 </TextBlock>
                 <Button    Visibility="Hidden" Height="25" Margin="35,0,0,0" Content=" > " Click="EditToggle" x:Name="linkEdit"/>
                 <TextBox   Visibility="Hidden" Height="25" Width="120" PreviewKeyDown="LinkPreviewKeyDown" x:Name="linkEditText"/>
-                <Button    Visibility="Hidden" Height="25" Content=" ✓ " Click="linkKaydet_Click" x:Name="linkEditKaydet"/>
+                <Button    Visibility="Hidden" Height="25" Content=" ✓ " Click="TBKaydetClick" x:Name="linkEditKaydet" Tag="link"/>
             </StackPanel>
 
             <TextBlock  Grid.Row="5" VerticalAlignment="Center" Visibility="Hidden" Margin="50,0,0,0" Text="Başlangıç" x:Name="baslangicText"/>
@@ -98,8 +98,8 @@
             </StackPanel>
 
             <Grid Grid.Row="7" Grid.ColumnSpan="2" Margin="100,0,0,0">
-                <Button    HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Width="75" Content="Sil" Click="VideoSilBtn_Click" x:Name="videoSilBtn"/>
-                <Button    HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Width="37" Content="✓"  Click="Onay_Click"  x:Name="onay"/>
+                <Button    HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Width="75" Content="Sil" Click="Sil_Click" x:Name="videoSilBtn"/>
+                <Button    HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Width="37" Content="✓"  Click="Onay_Click" x:Name="onay"/>
                 <Button    HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Hidden" Width="37" Content="X"   Click="Iptal_Click" x:Name="iptal" Margin="38,0,0,0"/>
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="100,0,0,0"  Text="" x:Name="silDurum"/>
             </Grid>

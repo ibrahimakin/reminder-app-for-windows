@@ -9,9 +9,6 @@ using System.Diagnostics;
 
 namespace latest_point
 {
-    /// <summary>
-    /// Interaction logic for basvuruPage.xaml
-    /// </summary>
     public partial class basvuruPage : UserControl
     {
 
@@ -159,77 +156,6 @@ namespace latest_point
             buton.Margin = new Thickness(0, 5, 0, 0);
         }
 
-        private void isimKaydet_Click(object sender, RoutedEventArgs e)
-        {
-            string yeni = isimEditText.Text;
-
-            if (yeni == "")
-            {
-                changeTextAsync("İsim boş olamaz.");
-                return;
-            }
-            int index = Convert.ToInt16(tiklanan.Tag);
-            if (yeni == basvurus[index].Isim)
-            {
-                changeTextAsync("İsim aynı.");
-                return;
-            }
-            string id = basvurus[index].Id.ToString();
-
-            Database.TableEtkinlik.UpdateRow(yeni, "isim", id);
-
-            basvurus[index].Isim = yeni;
-            isim.Text = yeni;
-            tiklanan.Content = yeni;
-
-            degisimGuncelle(index);
-
-            changeTextAsync("Değiştirildi.");
-        }
-
-
-        private void KayitKaydet_Click(object sender, RoutedEventArgs e)
-        {
-            string yeni = kayitEditText.Text;
-            int index = Convert.ToInt16(tiklanan.Tag);
-            if (yeni == basvurus[index].Kayit)
-            {
-                changeTextAsync("Başvuru aynı.");
-                return;
-            }
-            string id = basvurus[index].Id.ToString();
-
-            Database.TableEtkinlik.UpdateRow(yeni, "kayit", id);
-
-            basvurus[index].Kayit = yeni;
-
-            kayit.Text = yeni;
-
-            degisimGuncelle(index);
-            changeTextAsync("Değiştirildi.");
-        }
-
-
-        private void SonKaydet_Click(object sender, RoutedEventArgs e)
-        {
-            string yeni = sonEditText.Text;
-            int index = Convert.ToInt16(tiklanan.Tag);
-            if (yeni == basvurus[index].Son)
-            {
-                changeTextAsync("Son başvuru aynı.");
-                return;
-            }
-            string id = basvurus[index].Id.ToString();
-
-            Database.TableEtkinlik.UpdateRow(yeni, "son", id);
-
-            basvurus[index].Son = yeni;
-            son.Text = yeni;
-            degisimGuncelle(index);
-
-            changeTextAsync("Değiştirildi.");
-        }
-
         private void EditToggle(object sender, RoutedEventArgs e)
         {
             string name;
@@ -243,7 +169,7 @@ namespace latest_point
             {
                 name = be.Name;
             }
-            
+
             DatePicker dp = ContentPanel.FindName(name + "Text") as DatePicker;
             TextBox tb = ContentPanel.FindName(name + "Text") as TextBox;
             CheckBox cb = ContentPanel.FindName(name + "Text") as CheckBox;
@@ -252,14 +178,15 @@ namespace latest_point
             if (be.Content.ToString() == " > ")
             {
                 be.Content = " < ";
-                if (tb != null)
-                {
-                    tb.Visibility = Visibility.Visible;
-                    tb.Width = 120;
-                }
-                else if(dp != null)
+                if (dp != null)
                 {
                     dp.Visibility = Visibility.Visible;
+                }
+                else if (tb != null)
+                {
+
+                    tb.Visibility = Visibility.Visible;
+                    tb.Width = 120;
                 }
                 else
                 {
@@ -270,14 +197,14 @@ namespace latest_point
             else
             {
                 be.Content = " > ";
-                if (tb != null)
+                if (dp != null)
+                {
+                    dp.Visibility = Visibility.Hidden;
+                }
+                else if (tb != null)
                 {
                     tb.Visibility = Visibility.Hidden;
                     tb.Width = 0;
-                }
-                else if(dp != null)
-                {
-                    dp.Visibility = Visibility.Hidden;
                 }
                 else
                 {
@@ -285,50 +212,113 @@ namespace latest_point
                 }
                 bk.Visibility = Visibility.Hidden;
             }
+        }
+
+        private void TBKaydetClick(object sender, RoutedEventArgs e)
+        {
+            Button kaydet = sender as Button;       // Tıklanan buton
+
+            string name = kaydet.Tag.ToString();                                 // Butonun tag'i sayesinde
+            TextBox dp = ContentPanel.FindName(name + "EditText") as TextBox;    // TextBox bulundu
+
+            string value = dp.Text;                 // TextBox'a girilen değer alındı.
+
+            int index = buttons.IndexOf(tiklanan);
+
+            switch (name)
+            {
+                case "isim":
+                    if (value == "")
+                    {
+                        changeTextAsync("İsim boş olamaz.");
+                        return;
+                    }
+                    if (value == basvurus[index].Isim)
+                    {
+                        changeTextAsync("İsim aynı.");
+                        return;
+                    }
+                    basvurus[index].Isim = value;
+                    ChangeButton(tiklanan, value, basvurus[index].Bitti);
+                    break;
+                case "link":
+                    if (value == basvurus[index].Link)
+                    {
+                        changeTextAsync("Link aynı.");
+                        return;
+                    }
+                    basvurus[index].Link = value;
+                    break;
+                default:
+                    // code block if no match
+                    return;
+            }
+
+            string id = basvurus[index].Id.ToString();                  // Veritabanı için Id bilgisi alındı
+            Database.TableEtkinlik.UpdateRow(value, name, id);          // Veritabanına kaydedildi.
+
+            TextBlock tb = ContentPanel.FindName(name) as TextBlock;    // Güncellenecek TextBlock
+            tb.Text = value;                                            // Güncellendi
+
+            degisimGuncelle(index);
+
+            changeTextAsync("Değiştirildi.");
+        }
+
+        private void DPKaydetClick(object sender, RoutedEventArgs e)
+        {
+            Button kaydet = sender as Button;       // Tıklanan buton
             
-        }
-
-        private void sonucKaydet_Click(object sender, RoutedEventArgs e)
-        {
-            string yeni = sonucEditText.Text;
-            int index = Convert.ToInt16(tiklanan.Tag);
-            if (yeni == basvurus[index].Sonuc)
+            string name = kaydet.Tag.ToString();                                       // Butonun tag'i sayesinde
+            DatePicker dp = ContentPanel.FindName(name + "EditText") as DatePicker;    // DatePicker bulundu
+            
+            string value = dp.Text;                 // DatePicker'a girilen değer alındı.
+            
+            int index = buttons.IndexOf(tiklanan);
+            
+            switch (name)
             {
-                changeTextAsync("Sonuc aynı.");
-                return;
+                case "kayit":
+                    if (value == basvurus[index].Kayit)
+                    {
+                        changeTextAsync("Başvuru aynı.");
+                        return;
+                    }
+                    basvurus[index].Kayit = value;
+                    break;
+                case "son":                    
+                    if (value == basvurus[index].Son)
+                    {
+                        changeTextAsync("Son başvuru aynı.");
+                        return;
+                    }
+                    basvurus[index].Son = value;
+                    break;
+                case "sonuc":
+                    if (value == basvurus[index].Sonuc)
+                    {
+                        changeTextAsync("Sonuç aynı.");
+                        return;
+                    }
+                    basvurus[index].Sonuc = value;
+                    break;
+                default:
+                    // code block if no match
+                    return;
             }
 
-            string id = basvurus[index].Id.ToString();
+            string id = basvurus[index].Id.ToString();                  // Veritabanı için Id bilgisi alındı
+            Database.TableEtkinlik.UpdateRow(value, name, id);          // Veritabanına kaydedildi.
 
-            Database.TableEtkinlik.UpdateRow(yeni, "sonuc", id);
+            TextBlock tb = ContentPanel.FindName(name) as TextBlock;    // Güncellenecek TextBlock
+            tb.Text = value;                                            // Güncellendi
 
-            basvurus[index].Sonuc = yeni;
-            sonuc.Text = yeni;
             degisimGuncelle(index);
+
             changeTextAsync("Değiştirildi.");
         }
 
-        private void linkKaydet_Click(object sender, RoutedEventArgs e)
-        {
-            string yeni = linkEditText.Text;
-            int index = Convert.ToInt16(tiklanan.Tag);
-            if (yeni == basvurus[index].Link)
-            {
-                changeTextAsync("Link aynı.");
-                return;
-            }
-            string id = basvurus[index].Id.ToString();
-
-            Database.TableEtkinlik.UpdateRow(yeni, "link", id);
-
-            basvurus[index].Link = yeni;
-            link.Text = yeni;
-            degisimGuncelle(index);
-            changeTextAsync("Değiştirildi.");
-        }
-
-
-        private void bittiKaydet_Click(object sender, RoutedEventArgs e)
+        private void CBKaydetClick(object sender, RoutedEventArgs e)
         {
             int yeni;
             if (bittiEditText.IsChecked == true) { yeni = 1; }
@@ -358,33 +348,26 @@ namespace latest_point
             basvurus[index].Degisim = now;
         }
 
-        private void VideoSilBtn_Click(object sender, RoutedEventArgs e)
+        private void Sil_Click(object sender, RoutedEventArgs e)
         {
             videoSilBtn.Visibility = Visibility.Hidden;
             silDurum.Text = (Convert.ToInt16(tiklanan.Tag) + 1) + ". kayıt silinsin mi?";
             onay.Visibility = Visibility.Visible;
             iptal.Visibility = Visibility.Visible;
-
-
         }
 
         private void Onay_Click(object sender, RoutedEventArgs e)
         {
-            //int index = Convert.ToInt16(tiklanan.Tag);
             int index = buttons.IndexOf(tiklanan);
             string id = basvurus[index].Id.ToString();
             Database.TableEtkinlik.DeleteFromTable(id);
             basvurus.RemoveAt(index);
             buttons.RemoveAt(index);
 
-            
-
             changeTextAsync("Silindi.");
-
             
             bitmeyenButonlar.Children.Remove(tiklanan);
             bitenButonlar.Children.Remove(tiklanan);
-            
             
             bilgiTemizle();
         }
@@ -396,7 +379,6 @@ namespace latest_point
             iptal.Visibility = Visibility.Hidden;
             videoSilBtn.Visibility = Visibility.Visible;
         }
-
 
         private void bilgiTemizle()
         {
@@ -448,7 +430,6 @@ namespace latest_point
             baslangic.Text = "";
             degisim.Text = "";
 
-            //silDurum.Text = "";
             onay.Visibility = Visibility.Hidden;
             iptal.Visibility = Visibility.Hidden;
             videoSilBtn.Visibility = Visibility.Hidden;
@@ -474,10 +455,10 @@ namespace latest_point
                 e.Handled = e.Key == Key.Space;
             }
         }
+
         private void LinkPreviewKeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = e.Key == Key.Space;            
         }
-        
     }
 }
