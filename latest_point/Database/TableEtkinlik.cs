@@ -9,7 +9,7 @@ namespace latest_point.Database
         public static void AddToTable(string isim, string kayit, string son, string link, string sonuc)
         {
             string now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            string commandText = "insert into Table_Basvuru (isim, kayit, son, sonuc, link, bitti, baslangic, degisim, arsiv) values ('" + isim + "', '" + kayit + "', '" + son + "', '" + sonuc + "', '" + link + "', 0, '" + now + "', '" + now + "', 0);";
+            string commandText = "insert into Table_Basvuru (isim, kayit, son, sonuc, link, bitti, baslangic, degisim, arsiv, sync) values ('" + isim + "', '" + kayit + "', '" + son + "', '" + sonuc + "', '" + link + "', 0, '" + now + "', '" + now + "', 0, 2);";
             DatabaseOperations.UpdateTable(commandText);
         }
 
@@ -54,6 +54,14 @@ namespace latest_point.Database
 
             string now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
             commandText = "update Table_Basvuru set degisim = '" + now + "' where id = '" + id + "'";
+            DatabaseOperations.UpdateTable(commandText);
+        }
+
+        // Sadece bir kez kullanıldı
+        public static void GenerateHash(int id, string isim)
+        {
+            string Value = Sync.MD5Operations.GetMd5Hash(isim);
+            string commandText = "update Table_Basvuru set hash = '" + Value + "' where id = '" + id + "'";
             DatabaseOperations.UpdateTable(commandText);
         }
     }

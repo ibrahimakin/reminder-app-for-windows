@@ -26,8 +26,7 @@ namespace latest_point
 
         public void Listele()
         {
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
             SQLiteCommand command = new SQLiteCommand("select * from Table_Kitap", conn);
             try
             {
@@ -63,10 +62,7 @@ namespace latest_point
                 MessageBox.Show("Veritabanı bağlanamadı.");
                 //MessageBox.Show(e.ToString());
             }
-            finally
-            {
-                conn.Dispose();
-            }
+            
         }
 
         private void YeniButon_Click(object sender, RoutedEventArgs e)
@@ -126,28 +122,24 @@ namespace latest_point
         {
             int index = Convert.ToInt16(tiklanan.Tag);
             string id = kitaps[index].Id.ToString();
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
             SQLiteCommand command = new SQLiteCommand("update Table_Kitap set sayfa = '" + sayfaEditText.Text + "' where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
             kitaps[index].Sayfa = Convert.ToInt16(sayfaEditText.Text);
 
             sayfa.Text = sayfaEditText.Text;
-            conn.Dispose();
             degisimGuncelle(index);
         }
 
         void degisimGuncelle(int index)
         {
             string id = kitaps[index].Id.ToString();
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
             string now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
             degisim.Text = now;
             SQLiteCommand command = new SQLiteCommand("update Table_Kitap set degisim = '" + degisim.Text + "' where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
             kitaps[index].Degisim = now;
-            conn.Dispose();
         }
 
         private void SayfaPreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -173,11 +165,9 @@ namespace latest_point
         {
             int index = Convert.ToInt16(tiklanan.Tag);
             string id = kitaps[index].Id.ToString();
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
             SQLiteCommand command = new SQLiteCommand("delete from Table_Kitap where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
-            conn.Dispose();
             kitaps.RemoveAt(index);
 
             changeTextAsync();
@@ -245,8 +235,7 @@ namespace latest_point
             int index = Convert.ToInt16(tiklanan.Tag);
             string id = kitaps[index].Id.ToString();
 
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
 
             string yeni = isimEditText.Text;
 
@@ -257,7 +246,6 @@ namespace latest_point
             isim.Text = yeni;
             tiklanan.Content = yeni;
 
-            conn.Dispose();
             degisimGuncelle(index);
         }
 
@@ -312,8 +300,7 @@ namespace latest_point
             int index = Convert.ToInt16(tiklanan.Tag);
             string id = kitaps[index].Id.ToString();
 
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
 
             string yeni = linkEditText.Text;
 
@@ -323,7 +310,6 @@ namespace latest_point
             kitaps[index].Link = yeni;
             link.Text = yeni;
 
-            conn.Dispose();
             degisimGuncelle(index);
         }
         private void linkHyper_RequestNavigate(object sender, RequestNavigateEventArgs e)

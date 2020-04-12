@@ -23,8 +23,7 @@ namespace latest_point
             string isim = isim_tb.Text;
             string sayfa = sayfa_tb.Text;
             string now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
             if (isim == "")
             {
                 changeTextAsync("İsim boş olamaz.");
@@ -40,7 +39,7 @@ namespace latest_point
             }
             catch (System.Data.SQLite.SQLiteException)
             {
-                if (!DBconnection.durum)
+                if (!Database.DatabaseOperations.GetState())
                 {
                     changeTextAsync("Veritabanı bağlanamadı.");
                 }
@@ -48,7 +47,6 @@ namespace latest_point
                 //ekleDurum.Text = "Kayıt mevcut.";
             }
 
-            conn.Dispose();
         }
 
         private void EklePreviewTextInput(object sender, TextCompositionEventArgs e)

@@ -27,8 +27,7 @@ namespace latest_point
 
         public void Listele()
         {
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
             SQLiteCommand command = new SQLiteCommand("select * from Table_Video",conn);
             try
             {
@@ -64,10 +63,7 @@ namespace latest_point
                 MessageBox.Show("Veritabanı bağlanamadı.");
                 //MessageBox.Show(e.ToString());
             }
-            finally
-            {
-                conn.Dispose();
-            }
+            
         }
 
         private void YeniButon_Click(object sender, RoutedEventArgs e)
@@ -140,14 +136,13 @@ namespace latest_point
             int index = Convert.ToInt16(tiklanan.Tag);
             string id = videos[index].Id.ToString();
 
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
+            
             SQLiteCommand command = new SQLiteCommand("update Table_Video set kacinci = '" + kacinciEditText.Text + "' where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
             videos[index].Kacinci = kacinciEditText.Text;
 
             kacinci.Text = kacinciEditText.Text;
-            conn.Dispose();
             degisimGuncelle(index);
         }
 
@@ -155,28 +150,24 @@ namespace latest_point
         {
             int index = Convert.ToInt16(tiklanan.Tag);
             string id = videos[index].Id.ToString();
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
             SQLiteCommand command = new SQLiteCommand("update Table_Video set dakika = '" + dakikaEditText.Text + "' where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
             videos[index].Dakika = dakikaEditText.Text;
             
             dakika.Text = dakikaEditText.Text;
-            conn.Dispose();
             degisimGuncelle(index);
         }
 
         void degisimGuncelle(int index)
         {
             string id = videos[index].Id.ToString();
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
             string now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
             degisim.Text = now;
             SQLiteCommand command = new SQLiteCommand("update Table_Video set degisim = '" + degisim.Text + "' where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
             videos[index].Degisim = now;
-            conn.Dispose();
         }
 
         private void EditPreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -209,11 +200,9 @@ namespace latest_point
         {
             int index = Convert.ToInt16(tiklanan.Tag);
             string id = videos[index].Id.ToString();
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
             SQLiteCommand command = new SQLiteCommand("delete from Table_Video where id = '" + id + "' ", conn);
             command.ExecuteNonQuery();
-            conn.Dispose();
             videos.RemoveAt(index);
 
             changeTextAsync();
@@ -281,8 +270,7 @@ namespace latest_point
             int index = Convert.ToInt16(tiklanan.Tag);
             string id = videos[index].Id.ToString();
 
-            SQLiteConnection conn = new SQLiteConnection(DBconnection.DBpath);
-            conn.Open();
+            SQLiteConnection conn = Database.DatabaseOperations.getConn();
 
             string yeni = kacinciEditText.Text;
             
@@ -293,7 +281,6 @@ namespace latest_point
             kacinci.Text = yeni;
             tiklanan.Content = yeni;
 
-            conn.Dispose();
             degisimGuncelle(index);
         }
 
