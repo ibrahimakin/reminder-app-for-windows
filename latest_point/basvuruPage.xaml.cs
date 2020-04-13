@@ -374,6 +374,8 @@ namespace latest_point
 
         private void Iptal_Click(object sender, RoutedEventArgs e)
         {
+            //Sync.SyncControl.StartSync();
+            Sync.SyncControl.ReadData();
             silDurum.Text = "";
             onay.Visibility = Visibility.Hidden;
             iptal.Visibility = Visibility.Hidden;

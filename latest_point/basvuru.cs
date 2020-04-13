@@ -1,25 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace latest_point
+﻿namespace latest_point
 {
     class basvuru
     {
-        int id, bitti, arsiv;
-        string isim, kayit, son, sonuc, link, baslangic, degisim;
+        private int id, bitti, arsiv;
+        private string isim, kayit, son, sonuc, link, baslangic, degisim, hash;
 
-        public basvuru(int id, string isim, string baslangic, string degisim)
-        {
-            this.id = id;
-            this.isim = isim;
-            this.baslangic = baslangic;
-            this.degisim = degisim;
-        }
-
-        public basvuru(int id, string isim, string kayit, string son, string sonuc, string link, int bitti, string baslangic, string degisim, int arsiv)
+        public basvuru(int id, string isim, string kayit, string son, string sonuc, string link, int bitti, string baslangic, string degisim, int arsiv, string hash)
         {
             this.id = id;
             this.isim = isim;

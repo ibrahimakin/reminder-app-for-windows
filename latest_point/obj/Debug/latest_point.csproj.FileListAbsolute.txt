@@ -75,3 +75,5 @@ E:\Projects\Visual Studio\Nerede_Kaldim\latest_point\obj\Debug\latest_point.cspr
 E:\Projects\Visual Studio\Nerede_Kaldim\latest_point\obj\Debug\latest_point.exe
 E:\Projects\Visual Studio\Nerede_Kaldim\latest_point\obj\Debug\latest_point.pdb
 E:\Projects\Visual Studio\Nerede_Kaldim\latest_point\obj\Debug\latest_point.csproj.CoreCompileInputs.cache
+E:\Projects\Visual Studio\Nerede_Kaldim\latest_point\bin\Debug\Newtonsoft.Json.dll
+E:\Projects\Visual Studio\Nerede_Kaldim\latest_point\bin\Debug\Newtonsoft.Json.xml

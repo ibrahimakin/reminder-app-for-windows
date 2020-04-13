@@ -20,7 +20,7 @@ namespace latest_point.Database
 
             List<basvuru> basvurus = new List<basvuru>();
             int id, bitti, arsiv;
-            string isim, kayit, son, sonuc, link, baslangic, degisim;
+            string isim, kayit, son, sonuc, link, baslangic, degisim, hash;
 
             while (rdr.Read())
             {
@@ -34,8 +34,9 @@ namespace latest_point.Database
                 baslangic = rdr["baslangic"].ToString();
                 degisim = rdr["degisim"].ToString();
                 arsiv = Convert.ToInt32(rdr["arsiv"]);
+                hash = rdr["hash"].ToString();
 
-                basvuru item = new basvuru(id, isim, kayit, son, sonuc, link, bitti, baslangic, degisim, arsiv);
+                basvuru item = new basvuru(id, isim, kayit, son, sonuc, link, bitti, baslangic, degisim, arsiv, hash);
                 basvurus.Add(item);
             }
             return basvurus;

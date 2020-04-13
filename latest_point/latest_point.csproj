@@ -59,6 +59,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -117,6 +120,7 @@
     </Compile>
     <Compile Include="Sync\MD5Operations.cs" />
     <Compile Include="Sync\SyncControl.cs" />
+    <Compile Include="Tables.cs" />
     <Compile Include="video.cs" />
     <Compile Include="videoEkle.xaml.cs">
       <DependentUpon>videoEkle.xaml</DependentUpon>

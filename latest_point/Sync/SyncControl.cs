@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
@@ -8,7 +9,7 @@ namespace latest_point.Sync
     class SyncControl
     {
         private static List<string> tables = new List<string>() { "Table_Basvuru", "Table_Video", "Table_Kitap" };
-
+        private static Tables items;
         public static void StartSync()
         {
             string commandText;
@@ -20,7 +21,7 @@ namespace latest_point.Sync
                 int i = 0;
                 commandText = "select * from " + item + " where sync > 0";
                 rdr = Database.DatabaseOperations.GetItems(commandText);
-                myData += "\""+item+"\":{";
+                myData += "\""+item+"\":[";
                 while (rdr.Read())
                 {
                     i++;
@@ -29,11 +30,10 @@ namespace latest_point.Sync
                     isim = rdr["isim"].ToString();
                     degisim = rdr["degisim"].ToString();
                     hash = rdr["hash"].ToString();
-                    myData +="\"" + i + "\":{\"hash\":\"" + hash + "\"," +
+                    myData += "{\"hash\":\"" + hash + "\"," +
                         "\"degisim\":\"" + degisim + "\"," +
-                        "\"data\":{" +
-                                    "\"id\":\"" + id + "\"," +
-                                    "\"isim\":\"" + isim + "\",";
+                        "\"id\":\"" + id + "\"," +
+                        "\"isim\":\"" + isim + "\",";
                     if (item == "Table_Basvuru")
                     {
                         kayit = rdr["kayit"].ToString();
@@ -62,15 +62,31 @@ namespace latest_point.Sync
                     myData += "\"link\":\"" + link + "\"," +
                             "\"bitti\":\"" + bitti + "\"," +
                             "\"baslangic\":\"" + baslangic + "\"," +
-                            "\"arsiv\":\"" + arsiv + "\"}},";
+                            "\"arsiv\":\"" + arsiv + "\"},";
                     
                 }
-                myData += "},\n";
+                myData += "],\n";
             }
             myData += "}";
             var path = @"" + Environment.CurrentDirectory + "\\DB\\data.json";
 
             File.WriteAllText(path, myData);
+            Console.WriteLine("Yazıldı");
+        }
+
+        public static void ReadData()
+        {
+            StreamReader r = new StreamReader(@"" + Environment.CurrentDirectory + "\\DB\\data.json");
+            
+            string json = r.ReadToEnd();
+            items = JsonConvert.DeserializeObject<Tables>(json);
+            Console.WriteLine(items.Table_Basvuru[0].Isim);
+            
+        }
+
+        public static void CompareData()
+        {
+
         }
     }
 }
