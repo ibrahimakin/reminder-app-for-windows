@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Diagnostics;
+using System.Data.SQLite;
 
 namespace latest_point
 {
@@ -225,10 +226,12 @@ namespace latest_point
 
             int index = buttons.IndexOf(tiklanan);
 
+            bool isimKaydet = false;
+
             switch (name)
             {
                 case "isim":
-                    if (value == "")
+                    if (String.IsNullOrWhiteSpace(value))
                     {
                         changeTextAsync("İsim boş olamaz.");
                         return;
@@ -238,13 +241,12 @@ namespace latest_point
                         changeTextAsync("İsim aynı.");
                         return;
                     }
-                    basvurus[index].Isim = value;
-                    ChangeButton(tiklanan, value, basvurus[index].Bitti);
+                    isimKaydet = true;
                     break;
                 case "link":
-                    if (value == basvurus[index].Link)
+                    if (value == basvurus[index].Link || Uri.IsWellFormedUriString(value, UriKind.Relative))
                     {
-                        changeTextAsync("Link aynı.");
+                        changeTextAsync("Link aynı veya geçersiz.");
                         return;
                     }
                     basvurus[index].Link = value;
@@ -255,8 +257,20 @@ namespace latest_point
             }
 
             string id = basvurus[index].Id.ToString();                  // Veritabanı için Id bilgisi alındı
-            Database.TableEtkinlik.UpdateRow(value, name, id);          // Veritabanına kaydedildi.
-
+            try
+            {
+                Database.TableEtkinlik.UpdateRow(value, name, id);      // Veritabanına kaydedildi.
+                if (isimKaydet)
+                {
+                    basvurus[index].Isim = value;
+                    ChangeButton(tiklanan, value, basvurus[index].Bitti);
+                }
+            }
+            catch (SQLiteException)
+            {
+                changeTextAsync("Kayıt mevcut.");
+                return;
+            }
             TextBlock tb = ContentPanel.FindName(name) as TextBlock;    // Güncellenecek TextBlock
             tb.Text = value;                                            // Güncellendi
 
@@ -302,9 +316,9 @@ namespace latest_point
                     }
                     basvurus[index].Sonuc = value;
                     break;
-                default:
+                //default:
                     // code block if no match
-                    return;
+                    //return;
             }
 
             string id = basvurus[index].Id.ToString();                  // Veritabanı için Id bilgisi alındı

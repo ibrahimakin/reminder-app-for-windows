@@ -8,8 +8,9 @@ namespace latest_point.Database
     {
         public static void AddToTable(string isim, string kayit, string son, string link, string sonuc)
         {
+            string value = Sync.MD5Operations.GetMd5Hash(isim);
             string now = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            string commandText = "insert into Table_Basvuru (isim, kayit, son, sonuc, link, bitti, baslangic, degisim, arsiv, sync) values ('" + isim + "', '" + kayit + "', '" + son + "', '" + sonuc + "', '" + link + "', 0, '" + now + "', '" + now + "', 0, 2);";
+            string commandText = "insert into Table_Basvuru (isim, kayit, son, sonuc, link, bitti, baslangic, degisim, arsiv, sync, hash) values ('" + isim + "', '" + kayit + "', '" + son + "', '" + sonuc + "', '" + link + "', 0, '" + now + "', '" + now + "', 0, 2, '" + value + "');";
             DatabaseOperations.UpdateTable(commandText);
         }
 
